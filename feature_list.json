@@ -1,33 +1,366 @@
 [
-  { "id": 1, "category": "functional", "wave": 0, "description": "Project builds clean: npm run build exits 0 with no TypeScript errors", "steps": ["run npm run build", "confirm exit code 0", "confirm no TS errors in output"], "passes": false },
-  { "id": 2, "category": "functional", "wave": 0, "description": "Dev server boots and renders the boot screen", "steps": ["run npm run dev", "open localhost", "see AI TRAINER boot screen"], "passes": false },
-  { "id": 3, "category": "style", "wave": 0, "description": "Tron theme tokens defined in index.css @theme and used (no hardcoded hex in components)", "steps": ["open src/index.css", "confirm @theme has cyan/orange/violet/lime/rose tokens", "grep components for raw hex"], "passes": false },
-  { "id": 4, "category": "style", "wave": 0, "description": "Glowing Tron grid floor renders behind content", "steps": ["load app", "observe fixed grid background with radial mask"], "passes": false },
-
-  { "id": 10, "category": "functional", "wave": 1, "description": "Rubric engine detects role signal in a prompt", "steps": ["call rubric on 'You are a chef. Write a recipe.'", "confirm role signal detected true"], "passes": false },
-  { "id": 11, "category": "functional", "wave": 1, "description": "Rubric engine detects all core signals across a strong prompt", "steps": ["build a prompt containing role, context, audience, format, constraints, example, tone", "run rubric", "confirm each signal flagged present", "confirm score is high (>80)", "confirm a weak prompt scores low (<35)", "confirm score is deterministic across repeated calls", "confirm per-signal feedback strings returned", "confirm no network call made", "confirm function is pure (no localStorage writes)", "confirm empty prompt returns score 0 without throwing", "confirm very long prompt handled without error"], "passes": false },
-  { "id": 12, "category": "functional", "wave": 1, "description": "Rubric returns per-signal feedback with actionable next step", "steps": ["run rubric on weak prompt", "confirm feedback names the single highest-impact missing signal"], "passes": false },
-  { "id": 13, "category": "functional", "wave": 1, "description": "Taste Engine records an interest event and updates weighted profile", "steps": ["call taste.record with topic cooking", "call taste.record with topic cooking again", "confirm cooking weight increased", "confirm topInterests returns cooking first", "confirm profile persists to localStorage", "confirm reload restores profile", "confirm unknown tag is rejected or namespaced safely", "confirm topInterests(n) respects n", "confirm a fresh profile returns sensible defaults", "confirm no questions/prompts surfaced to user by the engine"], "passes": false },
-  { "id": 14, "category": "functional", "wave": 1, "description": "Progress engine awards XP, levels up, and tracks streak", "steps": ["add XP below threshold, confirm level unchanged", "add XP past threshold, confirm level increments", "confirm streak increments on consecutive plays", "confirm badges can be unlocked and de-duplicated", "confirm state persists to localStorage", "confirm reload restores XP/level/streak/badges", "confirm HUD-facing selector returns a stable shape", "confirm resetting progress clears storage"], "passes": false },
-  { "id": 15, "category": "functional", "wave": 1, "description": "Level/content data schema is typed and shared", "steps": ["open src/engine/types.ts", "confirm Level, Signal, IdeaCard, DeckCard types exported", "confirm screens can import them"], "passes": false },
-
-  { "id": 20, "category": "functional", "wave": 2, "description": "App shell mounts router with Hub as the landing route", "steps": ["load app", "confirm Hub renders", "confirm routes exist for each mode"], "passes": false },
-  { "id": 21, "category": "functional", "wave": 2, "description": "HUD shows live XP, level, and streak and updates after an action", "steps": ["observe HUD on load", "complete a scoring action", "confirm XP number rises in the HUD without reload"], "passes": false },
-  { "id": 22, "category": "functional", "wave": 2, "description": "Hub is a Tron map with selectable mode nodes", "steps": ["load Hub", "confirm each mode appears as a node", "click a node, confirm navigation to that mode"], "passes": false },
-  { "id": 23, "category": "functional", "wave": 2, "description": "Glow-Up mode is fully playable end to end", "steps": ["open Glow-Up", "see lazy starter prompt and weak output", "add a Role ingredient", "confirm prompt text and score update", "add Context, Constraints, Format ingredients", "confirm simulated output visibly improves", "confirm score crosses the win threshold", "confirm a win state / XP award fires", "confirm you can remove an ingredient and score drops", "confirm reduced-motion users still get a usable experience", "confirm keyboard can add/remove ingredients"], "passes": false },
-  { "id": 24, "category": "style", "wave": 2, "description": "HUD and Hub use neon-box/panel utilities and glow, no raw hex", "steps": ["inspect HUD and Hub markup", "confirm .panel/.neon-box/.text-glow used", "grep for hardcoded hex"], "passes": false },
-
-  { "id": 30, "category": "functional", "wave": 3, "description": "Mind Reader mode is playable end to end", "steps": ["open Mind Reader", "see a secret goal", "write a vague prompt and submit", "confirm the literal AI reply exposes the gap to the goal", "confirm a hint/diff highlights what was unspecified", "revise the prompt to add the missing specifics", "submit again", "confirm the reply now satisfies the goal", "confirm a win/XP award fires", "confirm at least 3 distinct goals exist", "confirm it never calls the network"], "passes": false },
-  { "id": 31, "category": "functional", "wave": 3, "description": "Did-You-Know Deck flips cards and runs micro-challenges", "steps": ["open Deck mode", "see a stack/grid of cards", "flip a card to reveal the unexpected use", "start its 30s micro-challenge", "submit an attempt and get rubric feedback", "confirm engaging a card records a Taste event", "confirm progress through the deck is tracked", "confirm at least 8 cards exist across varied topics", "confirm cards are keyboard-flippable", "confirm a completed card is visibly marked"], "passes": false },
-  { "id": 32, "category": "functional", "wave": 3, "description": "Badges/progression screen reflects real progress state", "steps": ["earn XP and a badge in another mode", "open Badges screen", "confirm earned badges show unlocked and locked ones show how to earn them", "confirm XP/level/streak shown match the engine", "confirm Idea Forge entry or teaser is reachable"], "passes": false },
-  { "id": 33, "category": "functional", "wave": 3, "description": "Idea Forge generates personalized ideas from the Taste profile", "steps": ["play cards/prompts skewed toward cooking and writing", "open Idea Forge", "confirm generated ideas reference the inferred interests", "play skewed toward coding instead", "confirm Idea Forge output changes accordingly", "confirm ideas come from the offline idea bank", "confirm no quiz questions were asked", "confirm a fresh user with no signal still gets reasonable starter ideas", "confirm each idea is actionable (a thing to try with AI)", "confirm it never calls the network"], "passes": false },
-
-  { "id": 40, "category": "functional", "wave": 4, "description": "Content pack: at least 15 levels/items across the modes", "steps": ["count Glow-Up levels", "count Mind Reader goals", "count Deck cards", "confirm total >= 15 and spread across modes"], "passes": false },
-  { "id": 41, "category": "style", "wave": 4, "description": "Win/feedback juice: animated score, glow burst, and copy feel game-y", "steps": ["trigger a win", "observe animated XP and a glow/particle burst", "confirm copy is short and playful"], "passes": false },
-  { "id": 42, "category": "style", "wave": 4, "description": "Transitions between screens use Tron light-trail / snap motion", "steps": ["navigate Hub to a mode", "observe a trail/snap transition", "confirm it is disabled under reduced-motion"], "passes": false },
-
-  { "id": 50, "category": "style", "wave": 5, "description": "Zero em dashes anywhere in shipped copy", "steps": ["grep all src for the em dash character", "confirm zero matches in user-facing strings"], "passes": false },
-  { "id": 51, "category": "functional", "wave": 5, "description": "Fully keyboard navigable with visible focus and basic a11y", "steps": ["tab through Hub and each mode", "confirm focus is visible", "confirm interactive elements are reachable and labeled", "confirm reduced-motion honored"], "passes": false },
-  { "id": 52, "category": "functional", "wave": 5, "description": "State persists across reload and survives offline", "steps": ["earn XP, set taste profile", "hard reload", "confirm progress and profile intact", "go offline", "confirm app still loads and plays"], "passes": false },
-  { "id": 53, "category": "functional", "wave": 5, "description": "Responsive: usable on a phone-width viewport", "steps": ["resize to 390px wide", "confirm Hub and modes are usable with no horizontal scroll", "confirm tap targets are adequate"], "passes": false }
+  {
+    "id": 1,
+    "category": "functional",
+    "wave": 0,
+    "description": "Project builds clean: npm run build exits 0 with no TypeScript errors",
+    "steps": [
+      "run npm run build",
+      "confirm exit code 0",
+      "confirm no TS errors in output"
+    ],
+    "passes": true
+  },
+  {
+    "id": 2,
+    "category": "functional",
+    "wave": 0,
+    "description": "Dev server boots and renders the boot screen",
+    "steps": [
+      "run npm run dev",
+      "open localhost",
+      "see AI TRAINER boot screen"
+    ],
+    "passes": true
+  },
+  {
+    "id": 3,
+    "category": "style",
+    "wave": 0,
+    "description": "Tron theme tokens defined in index.css @theme and used (no hardcoded hex in components)",
+    "steps": [
+      "open src/index.css",
+      "confirm @theme has cyan/orange/violet/lime/rose tokens",
+      "grep components for raw hex"
+    ],
+    "passes": true
+  },
+  {
+    "id": 4,
+    "category": "style",
+    "wave": 0,
+    "description": "Glowing Tron grid floor renders behind content",
+    "steps": [
+      "load app",
+      "observe fixed grid background with radial mask"
+    ],
+    "passes": true
+  },
+  {
+    "id": 10,
+    "category": "functional",
+    "wave": 1,
+    "description": "Rubric engine detects role signal in a prompt",
+    "steps": [
+      "call rubric on 'You are a chef. Write a recipe.'",
+      "confirm role signal detected true"
+    ],
+    "passes": false
+  },
+  {
+    "id": 11,
+    "category": "functional",
+    "wave": 1,
+    "description": "Rubric engine detects all core signals across a strong prompt",
+    "steps": [
+      "build a prompt containing role, context, audience, format, constraints, example, tone",
+      "run rubric",
+      "confirm each signal flagged present",
+      "confirm score is high (>80)",
+      "confirm a weak prompt scores low (<35)",
+      "confirm score is deterministic across repeated calls",
+      "confirm per-signal feedback strings returned",
+      "confirm no network call made",
+      "confirm function is pure (no localStorage writes)",
+      "confirm empty prompt returns score 0 without throwing",
+      "confirm very long prompt handled without error"
+    ],
+    "passes": false
+  },
+  {
+    "id": 12,
+    "category": "functional",
+    "wave": 1,
+    "description": "Rubric returns per-signal feedback with actionable next step",
+    "steps": [
+      "run rubric on weak prompt",
+      "confirm feedback names the single highest-impact missing signal"
+    ],
+    "passes": false
+  },
+  {
+    "id": 13,
+    "category": "functional",
+    "wave": 1,
+    "description": "Taste Engine records an interest event and updates weighted profile",
+    "steps": [
+      "call taste.record with topic cooking",
+      "call taste.record with topic cooking again",
+      "confirm cooking weight increased",
+      "confirm topInterests returns cooking first",
+      "confirm profile persists to localStorage",
+      "confirm reload restores profile",
+      "confirm unknown tag is rejected or namespaced safely",
+      "confirm topInterests(n) respects n",
+      "confirm a fresh profile returns sensible defaults",
+      "confirm no questions/prompts surfaced to user by the engine"
+    ],
+    "passes": false
+  },
+  {
+    "id": 14,
+    "category": "functional",
+    "wave": 1,
+    "description": "Progress engine awards XP, levels up, and tracks streak",
+    "steps": [
+      "add XP below threshold, confirm level unchanged",
+      "add XP past threshold, confirm level increments",
+      "confirm streak increments on consecutive plays",
+      "confirm badges can be unlocked and de-duplicated",
+      "confirm state persists to localStorage",
+      "confirm reload restores XP/level/streak/badges",
+      "confirm HUD-facing selector returns a stable shape",
+      "confirm resetting progress clears storage"
+    ],
+    "passes": false
+  },
+  {
+    "id": 15,
+    "category": "functional",
+    "wave": 1,
+    "description": "Level/content data schema is typed and shared",
+    "steps": [
+      "open src/engine/types.ts",
+      "confirm Level, Signal, IdeaCard, DeckCard types exported",
+      "confirm screens can import them"
+    ],
+    "passes": false
+  },
+  {
+    "id": 20,
+    "category": "functional",
+    "wave": 2,
+    "description": "App shell mounts router with Hub as the landing route",
+    "steps": [
+      "load app",
+      "confirm Hub renders",
+      "confirm routes exist for each mode"
+    ],
+    "passes": false
+  },
+  {
+    "id": 21,
+    "category": "functional",
+    "wave": 2,
+    "description": "HUD shows live XP, level, and streak and updates after an action",
+    "steps": [
+      "observe HUD on load",
+      "complete a scoring action",
+      "confirm XP number rises in the HUD without reload"
+    ],
+    "passes": false
+  },
+  {
+    "id": 22,
+    "category": "functional",
+    "wave": 2,
+    "description": "Hub is a Tron map with selectable mode nodes",
+    "steps": [
+      "load Hub",
+      "confirm each mode appears as a node",
+      "click a node, confirm navigation to that mode"
+    ],
+    "passes": false
+  },
+  {
+    "id": 23,
+    "category": "functional",
+    "wave": 2,
+    "description": "Glow-Up mode is fully playable end to end",
+    "steps": [
+      "open Glow-Up",
+      "see lazy starter prompt and weak output",
+      "add a Role ingredient",
+      "confirm prompt text and score update",
+      "add Context, Constraints, Format ingredients",
+      "confirm simulated output visibly improves",
+      "confirm score crosses the win threshold",
+      "confirm a win state / XP award fires",
+      "confirm you can remove an ingredient and score drops",
+      "confirm reduced-motion users still get a usable experience",
+      "confirm keyboard can add/remove ingredients"
+    ],
+    "passes": false
+  },
+  {
+    "id": 24,
+    "category": "style",
+    "wave": 2,
+    "description": "HUD and Hub use neon-box/panel utilities and glow, no raw hex",
+    "steps": [
+      "inspect HUD and Hub markup",
+      "confirm .panel/.neon-box/.text-glow used",
+      "grep for hardcoded hex"
+    ],
+    "passes": false
+  },
+  {
+    "id": 30,
+    "category": "functional",
+    "wave": 3,
+    "description": "Mind Reader mode is playable end to end",
+    "steps": [
+      "open Mind Reader",
+      "see a secret goal",
+      "write a vague prompt and submit",
+      "confirm the literal AI reply exposes the gap to the goal",
+      "confirm a hint/diff highlights what was unspecified",
+      "revise the prompt to add the missing specifics",
+      "submit again",
+      "confirm the reply now satisfies the goal",
+      "confirm a win/XP award fires",
+      "confirm at least 3 distinct goals exist",
+      "confirm it never calls the network"
+    ],
+    "passes": false
+  },
+  {
+    "id": 31,
+    "category": "functional",
+    "wave": 3,
+    "description": "Did-You-Know Deck flips cards and runs micro-challenges",
+    "steps": [
+      "open Deck mode",
+      "see a stack/grid of cards",
+      "flip a card to reveal the unexpected use",
+      "start its 30s micro-challenge",
+      "submit an attempt and get rubric feedback",
+      "confirm engaging a card records a Taste event",
+      "confirm progress through the deck is tracked",
+      "confirm at least 8 cards exist across varied topics",
+      "confirm cards are keyboard-flippable",
+      "confirm a completed card is visibly marked"
+    ],
+    "passes": false
+  },
+  {
+    "id": 32,
+    "category": "functional",
+    "wave": 3,
+    "description": "Badges/progression screen reflects real progress state",
+    "steps": [
+      "earn XP and a badge in another mode",
+      "open Badges screen",
+      "confirm earned badges show unlocked and locked ones show how to earn them",
+      "confirm XP/level/streak shown match the engine",
+      "confirm Idea Forge entry or teaser is reachable"
+    ],
+    "passes": false
+  },
+  {
+    "id": 33,
+    "category": "functional",
+    "wave": 3,
+    "description": "Idea Forge generates personalized ideas from the Taste profile",
+    "steps": [
+      "play cards/prompts skewed toward cooking and writing",
+      "open Idea Forge",
+      "confirm generated ideas reference the inferred interests",
+      "play skewed toward coding instead",
+      "confirm Idea Forge output changes accordingly",
+      "confirm ideas come from the offline idea bank",
+      "confirm no quiz questions were asked",
+      "confirm a fresh user with no signal still gets reasonable starter ideas",
+      "confirm each idea is actionable (a thing to try with AI)",
+      "confirm it never calls the network"
+    ],
+    "passes": false
+  },
+  {
+    "id": 40,
+    "category": "functional",
+    "wave": 4,
+    "description": "Content pack: at least 15 levels/items across the modes",
+    "steps": [
+      "count Glow-Up levels",
+      "count Mind Reader goals",
+      "count Deck cards",
+      "confirm total >= 15 and spread across modes"
+    ],
+    "passes": false
+  },
+  {
+    "id": 41,
+    "category": "style",
+    "wave": 4,
+    "description": "Win/feedback juice: animated score, glow burst, and copy feel game-y",
+    "steps": [
+      "trigger a win",
+      "observe animated XP and a glow/particle burst",
+      "confirm copy is short and playful"
+    ],
+    "passes": false
+  },
+  {
+    "id": 42,
+    "category": "style",
+    "wave": 4,
+    "description": "Transitions between screens use Tron light-trail / snap motion",
+    "steps": [
+      "navigate Hub to a mode",
+      "observe a trail/snap transition",
+      "confirm it is disabled under reduced-motion"
+    ],
+    "passes": false
+  },
+  {
+    "id": 50,
+    "category": "style",
+    "wave": 5,
+    "description": "Zero em dashes anywhere in shipped copy",
+    "steps": [
+      "grep all src for the em dash character",
+      "confirm zero matches in user-facing strings"
+    ],
+    "passes": false
+  },
+  {
+    "id": 51,
+    "category": "functional",
+    "wave": 5,
+    "description": "Fully keyboard navigable with visible focus and basic a11y",
+    "steps": [
+      "tab through Hub and each mode",
+      "confirm focus is visible",
+      "confirm interactive elements are reachable and labeled",
+      "confirm reduced-motion honored"
+    ],
+    "passes": false
+  },
+  {
+    "id": 52,
+    "category": "functional",
+    "wave": 5,
+    "description": "State persists across reload and survives offline",
+    "steps": [
+      "earn XP, set taste profile",
+      "hard reload",
+      "confirm progress and profile intact",
+      "go offline",
+      "confirm app still loads and plays"
+    ],
+    "passes": false
+  },
+  {
+    "id": 53,
+    "category": "functional",
+    "wave": 5,
+    "description": "Responsive: usable on a phone-width viewport",
+    "steps": [
+      "resize to 390px wide",
+      "confirm Hub and modes are usable with no horizontal scroll",
+      "confirm tap targets are adequate"
+    ],
+    "passes": false
+  }
 ]
