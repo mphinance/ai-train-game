@@ -287,7 +287,7 @@
       "count Deck cards",
       "confirm total >= 15 and spread across modes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 41,
@@ -311,7 +311,7 @@
       "observe a trail/snap transition",
       "confirm it is disabled under reduced-motion"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 50,
