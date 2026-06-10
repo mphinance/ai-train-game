@@ -222,7 +222,7 @@
       "confirm at least 3 distinct goals exist",
       "confirm it never calls the network"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 31,
@@ -241,7 +241,7 @@
       "confirm cards are keyboard-flippable",
       "confirm a completed card is visibly marked"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 32,
@@ -255,7 +255,7 @@
       "confirm XP/level/streak shown match the engine",
       "confirm Idea Forge entry or teaser is reachable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 33,
@@ -274,7 +274,7 @@
       "confirm each idea is actionable (a thing to try with AI)",
       "confirm it never calls the network"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 40,
