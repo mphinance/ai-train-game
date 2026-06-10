@@ -1,0 +1,148 @@
+@import 'tailwindcss';
+
+/* Fonts are loaded via <link> in index.html (Orbitron / Rajdhani / JetBrains Mono). */
+
+/* ============================================================
+   AI TRAINER — TRON THEME
+   The single source of truth for color, glow, and motion.
+   All components theme off these tokens. Do not hardcode hex.
+   ============================================================ */
+@theme {
+  /* Core surfaces */
+  --color-void: #03060d;        /* page background, deepest */
+  --color-abyss: #060b18;       /* panel background */
+  --color-grid: #0c1a2e;        /* grid lines, faint */
+  --color-edge: #14304f;        /* borders, inactive */
+
+  /* Neon — Tron palette */
+  --color-cyan: #21e6ff;        /* primary / "the program" */
+  --color-cyan-dim: #0e7c8c;
+  --color-orange: #ff8a1f;      /* danger / opponent / accent */
+  --color-orange-dim: #9c4d12;
+  --color-violet: #b06bff;      /* rare / special / idea forge */
+  --color-lime: #7dff5a;        /* success / correct */
+  --color-rose: #ff3b6b;        /* error / wrong */
+
+  /* Text */
+  --color-ink: #dff6ff;         /* primary text, cool white */
+  --color-ink-soft: #7fa8c4;    /* secondary text */
+  --color-ink-faint: #3f5d76;   /* tertiary / disabled */
+
+  /* Type */
+  --font-display: 'Orbitron', 'Rajdhani', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --font-body: 'Rajdhani', 'Segoe UI', system-ui, sans-serif;
+
+  /* Motion */
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* The Tron grid floor — fixed behind everything. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--color-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: center;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
+    opacity: 0.5;
+  }
+
+  /* Scanline shimmer overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px, rgba(33, 230, 255, 0.012) 3px
+    );
+  }
+
+  #root { position: relative; z-index: 2; }
+
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.04em; }
+}
+
+/* ============================================================
+   Reusable neon utilities — use these instead of rolling glows.
+   ============================================================ */
+@layer utilities {
+  .text-glow      { text-shadow: 0 0 8px currentColor, 0 0 22px currentColor; }
+  .text-glow-soft { text-shadow: 0 0 6px currentColor; }
+
+  .neon-box {
+    border: 1px solid color-mix(in srgb, currentColor 60%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, currentColor 25%, transparent),
+      0 0 14px color-mix(in srgb, currentColor 35%, transparent),
+      inset 0 0 22px color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .panel {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-abyss) 92%, transparent),
+      color-mix(in srgb, var(--color-void) 96%, transparent));
+    border: 1px solid var(--color-edge);
+    border-radius: 14px;
+    backdrop-filter: blur(2px);
+  }
+
+  /* Light-trail underline sweep for active tabs/buttons */
+  .trail { position: relative; overflow: hidden; }
+  .trail::after {
+    content: '';
+    position: absolute;
+    left: -40%;
+    bottom: 0;
+    width: 40%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+    animation: trail-sweep 2.6s var(--ease-snap) infinite;
+  }
+
+  .anim-flicker { animation: flicker 3.5s linear infinite; }
+  .anim-pulse   { animation: pulse-glow 2s ease-in-out infinite; }
+  .anim-rise    { animation: rise 0.4s var(--ease-snap) both; }
+}
+
+@keyframes trail-sweep { 0% { left: -40%; } 100% { left: 110%; } }
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; }
+  20%, 22%, 82% { opacity: 0.72; }
+}
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px currentColor); }
+  50%      { filter: drop-shadow(0 0 16px currentColor); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trail::after, .anim-flicker, .anim-pulse, .anim-rise { animation: none; }
+  body::after { display: none; }
+}
