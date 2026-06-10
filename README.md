@@ -7,14 +7,14 @@ nobody reads it, so people stay bad at prompting. AI Trainer turns the reading i
 
 A Tron-styled browser game with four modes:
 
-- **Glow-Up** — take a lazy prompt and level it up with drag-in ingredients (role, context,
+- **Glow-Up.** Take a lazy prompt and level it up with drag-in ingredients (role, context,
   constraints, format). Watch the AI's answer get better in real time. *Teaches: better prompts.*
-- **Mind Reader** — you get a secret goal, you write one prompt, and the "AI" answers only as
+- **Mind Reader.** You get a secret goal, you write one prompt, and the "AI" answers only as
   well as your prompt allowed. See the gap between what you meant and what you said.
   *Teaches: saying what you actually mean.*
-- **Did-You-Know Deck** — flip cards of unexpected AI uses, each with a 30-second challenge.
+- **Did-You-Know Deck.** Flip cards of unexpected AI uses, each with a 30-second challenge.
   *Teaches: uses you hadn't thought of.*
-- **Idea Forge** — quietly learns what you care about while you play (no quiz, ever) and hands
+- **Idea Forge.** Quietly learns what you care about while you play (no quiz, ever) and hands
   you AI-use ideas tailored to you. *Teaches: idea generation and the payoff of personalization.*
 
 ## How it works

@@ -3,7 +3,7 @@
 /* Fonts are loaded via <link> in index.html (Orbitron / Rajdhani / JetBrains Mono). */
 
 /* ============================================================
-   AI TRAINER — TRON THEME
+   AI TRAINER, TRON THEME
    The single source of truth for color, glow, and motion.
    All components theme off these tokens. Do not hardcode hex.
    ============================================================ */
@@ -14,7 +14,7 @@
   --color-grid: #0c1a2e;        /* grid lines, faint */
   --color-edge: #14304f;        /* borders, inactive */
 
-  /* Neon — Tron palette */
+  /* Neon, Tron palette */
   --color-cyan: #21e6ff;        /* primary / "the program" */
   --color-cyan-dim: #0e7c8c;
   --color-orange: #ff8a1f;      /* danger / opponent / accent */
@@ -53,7 +53,7 @@
     overflow-x: hidden;
   }
 
-  /* The Tron grid floor — fixed behind everything. */
+  /* The Tron grid floor, fixed behind everything. */
   body::before {
     content: '';
     position: fixed;
@@ -87,7 +87,7 @@
 }
 
 /* ============================================================
-   Reusable neon utilities — use these instead of rolling glows.
+   Reusable neon utilities, use these instead of rolling glows.
    ============================================================ */
 @layer utilities {
   .text-glow      { text-shadow: 0 0 8px currentColor, 0 0 22px currentColor; }
@@ -130,7 +130,9 @@
   /* Route entrance (feature 42): a fast Tron snap-fade-up run on each screen
      change, plus a thin cyan light-trail that sweeps across once. Additive only
      and gated for reduced motion below. Under ~320ms, never blocks interaction. */
-  .anim-route { animation: route-in 0.32s var(--ease-snap) both; }
+  /* overflow-x: clip keeps the light-trail sweep (which parks off the right
+     edge after it finishes) from creating horizontal page scroll on mobile. */
+  .anim-route { animation: route-in 0.32s var(--ease-snap) both; overflow-x: clip; }
   .anim-route::before {
     content: '';
     position: absolute;
