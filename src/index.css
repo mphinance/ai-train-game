@@ -126,6 +126,22 @@
   .anim-flicker { animation: flicker 3.5s linear infinite; }
   .anim-pulse   { animation: pulse-glow 2s ease-in-out infinite; }
   .anim-rise    { animation: rise 0.4s var(--ease-snap) both; }
+
+  /* Route entrance (feature 42): a fast Tron snap-fade-up run on each screen
+     change, plus a thin cyan light-trail that sweeps across once. Additive only
+     and gated for reduced motion below. Under ~320ms, never blocks interaction. */
+  .anim-route { animation: route-in 0.32s var(--ease-snap) both; }
+  .anim-route::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 35%;
+    height: 2px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+    animation: route-trail 0.32s var(--ease-snap) both;
+  }
 }
 
 @keyframes trail-sweep { 0% { left: -40%; } 100% { left: 110%; } }
@@ -141,8 +157,18 @@
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+/* Route entrance keyframes (feature 42), additive. */
+@keyframes route-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes route-trail {
+  from { left: -35%; opacity: 1; }
+  to   { left: 100%; opacity: 0; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .trail::after, .anim-flicker, .anim-pulse, .anim-rise { animation: none; }
+  .trail::after, .anim-flicker, .anim-pulse, .anim-rise,
+  .anim-route, .anim-route::before { animation: none; }
   body::after { display: none; }
 }

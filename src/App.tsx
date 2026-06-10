@@ -3,6 +3,7 @@
 
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Hud from './components/hud/Hud';
+import PageTransition from './components/fx/PageTransition';
 import Hub from './screens/Hub';
 import GlowUp from './screens/GlowUp';
 import MindReader from './screens/MindReader';
@@ -16,15 +17,17 @@ export default function App() {
       <div className="flex min-h-screen flex-col">
         <Hud />
         <main className="flex-1 pb-12">
-          <Routes>
-            <Route path="/" element={<Hub />} />
-            <Route path="/glow-up" element={<GlowUp />} />
-            <Route path="/mind-reader" element={<MindReader />} />
-            <Route path="/deck" element={<DeckMode />} />
-            <Route path="/badges" element={<Badges />} />
-            <Route path="/idea-forge" element={<IdeaForge />} />
-            <Route path="*" element={<Hub />} />
-          </Routes>
+          <PageTransition>
+            <Routes>
+              <Route path="/" element={<Hub />} />
+              <Route path="/glow-up" element={<GlowUp />} />
+              <Route path="/mind-reader" element={<MindReader />} />
+              <Route path="/deck" element={<DeckMode />} />
+              <Route path="/badges" element={<Badges />} />
+              <Route path="/idea-forge" element={<IdeaForge />} />
+              <Route path="*" element={<Hub />} />
+            </Routes>
+          </PageTransition>
         </main>
       </div>
     </HashRouter>
