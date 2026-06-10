@@ -299,7 +299,7 @@
       "observe animated XP and a glow/particle burst",
       "confirm copy is short and playful"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 42,
@@ -322,7 +322,7 @@
       "grep all src for the em dash character",
       "confirm zero matches in user-facing strings"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 51,
@@ -335,7 +335,7 @@
       "confirm interactive elements are reachable and labeled",
       "confirm reduced-motion honored"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 52,
@@ -349,7 +349,7 @@
       "go offline",
       "confirm app still loads and plays"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 53,
@@ -361,6 +361,6 @@
       "confirm Hub and modes are usable with no horizontal scroll",
       "confirm tap targets are adequate"
     ],
-    "passes": false
+    "passes": true
   }
 ]
