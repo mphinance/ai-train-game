@@ -27,7 +27,7 @@
     "id": 3,
     "category": "style",
     "wave": 0,
-    "description": "Tron theme tokens defined in index.css @theme and used (no hardcoded hex in components)",
+    "description": "Theme tokens defined in index.css @theme and used (no hardcoded hex in components)",
     "steps": [
       "open src/index.css",
       "confirm @theme has cyan/orange/violet/lime/rose tokens",
@@ -39,10 +39,10 @@
     "id": 4,
     "category": "style",
     "wave": 0,
-    "description": "Glowing Tron grid floor renders behind content",
+    "description": "Soft paper dot texture renders behind content (Arcade Paper theme)",
     "steps": [
       "load app",
-      "observe fixed grid background with radial mask"
+      "observe faint fixed dot texture with radial mask"
     ],
     "passes": true
   },

@@ -339,7 +339,7 @@ function ChallengeModal({ card, alreadyDone, onClose }: ChallengeModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-void/80 p-4 anim-rise"
+      className="scrim fixed inset-0 z-50 flex items-center justify-center p-4 anim-rise"
       onClick={onClose}
     >
       <div

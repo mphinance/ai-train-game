@@ -5,7 +5,7 @@
 Everything out there for "getting good at AI" is documentation. Documentation is boring, so
 nobody reads it, so people stay bad at prompting. AI Trainer turns the reading into a game.
 
-A Tron-styled browser game with four modes:
+A bright, arcade-styled browser game with four modes:
 
 - **Glow-Up.** Take a lazy prompt and level it up with drag-in ingredients (role, context,
   constraints, format). Watch the AI's answer get better in real time. *Teaches: better prompts.*

@@ -1,37 +1,40 @@
 @import 'tailwindcss';
 
-/* Fonts are loaded via <link> in index.html (Orbitron / Rajdhani / JetBrains Mono). */
+/* Fonts are loaded via <link> in index.html (Fredoka / Nunito / JetBrains Mono). */
 
 /* ============================================================
-   AI TRAINER, TRON THEME
-   The single source of truth for color, glow, and motion.
-   All components theme off these tokens. Do not hardcode hex.
+   AI TRAINER, ARCADE PAPER THEME (light)
+   The single source of truth for color, shadow, and motion.
+   Components theme off these tokens. Do not hardcode hex.
+   Bright paper surfaces, jewel-tone accents that read on white,
+   soft rounded elevation, friendly rounded display font.
    ============================================================ */
 @theme {
-  /* Core surfaces */
-  --color-void: #03060d;        /* page background, deepest */
-  --color-abyss: #060b18;       /* panel background */
-  --color-grid: #0c1a2e;        /* grid lines, faint */
-  --color-edge: #14304f;        /* borders, inactive */
+  /* Core surfaces (light). Token names kept from the old theme so every
+     component keeps working. "void" is the page, "abyss" is a white card. */
+  --color-void: #eef2f8;        /* page background, soft cool paper */
+  --color-abyss: #ffffff;       /* card / panel background, white */
+  --color-grid: #d9e1ef;        /* faint dot texture */
+  --color-edge: #d6deea;        /* borders, inactive */
 
-  /* Neon, Tron palette */
-  --color-cyan: #21e6ff;        /* primary / "the program" */
-  --color-cyan-dim: #0e7c8c;
-  --color-orange: #ff8a1f;      /* danger / opponent / accent */
-  --color-orange-dim: #9c4d12;
-  --color-violet: #b06bff;      /* rare / special / idea forge */
-  --color-lime: #7dff5a;        /* success / correct */
-  --color-rose: #ff3b6b;        /* error / wrong */
+  /* Accents, jewel tones picked for contrast on white (readable as text too) */
+  --color-cyan: #0e7490;        /* primary / "the program" */
+  --color-cyan-dim: #5aa6ba;
+  --color-orange: #e2590a;      /* opponent / danger / accent */
+  --color-orange-dim: #f0a878;
+  --color-violet: #7c3aed;      /* rare / special / idea forge */
+  --color-lime: #1a9e4b;        /* success / correct */
+  --color-rose: #dd2358;        /* error / wrong */
 
-  /* Text */
-  --color-ink: #dff6ff;         /* primary text, cool white */
-  --color-ink-soft: #7fa8c4;    /* secondary text */
-  --color-ink-faint: #3f5d76;   /* tertiary / disabled */
+  /* Text (dark ink on light) */
+  --color-ink: #16233a;         /* primary text, deep navy ink */
+  --color-ink-soft: #51607a;    /* secondary text */
+  --color-ink-faint: #94a1b5;   /* tertiary / disabled */
 
-  /* Type */
-  --font-display: 'Orbitron', 'Rajdhani', system-ui, sans-serif;
+  /* Type, friendly rounded arcade */
+  --font-display: 'Fredoka', 'Baloo 2', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-  --font-body: 'Rajdhani', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
 
   /* Motion */
   --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -53,61 +56,49 @@
     overflow-x: hidden;
   }
 
-  /* The Tron grid floor, fixed behind everything. */
+  /* Soft paper dot texture, a hint of warmth behind everything. Very faint. */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image:
-      linear-gradient(var(--color-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
-    background-size: 44px 44px;
+    background-image: radial-gradient(var(--color-grid) 1.4px, transparent 1.4px);
+    background-size: 24px 24px;
     background-position: center;
-    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
-    opacity: 0.5;
-  }
-
-  /* Scanline shimmer overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      0deg, transparent, transparent 2px, rgba(33, 230, 255, 0.012) 3px
-    );
+    mask-image: radial-gradient(ellipse 100% 80% at 50% 35%, #000 40%, transparent 90%);
+    opacity: 0.6;
   }
 
   #root { position: relative; z-index: 2; }
 
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.04em; }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.005em; font-weight: 700; }
 }
 
 /* ============================================================
-   Reusable neon utilities, use these instead of rolling glows.
+   Reusable surface utilities. On the light theme these are soft
+   rounded arcade cards rather than glowing neon boxes. The class
+   names are kept so components do not need to change.
    ============================================================ */
 @layer utilities {
-  .text-glow      { text-shadow: 0 0 8px currentColor, 0 0 22px currentColor; }
-  .text-glow-soft { text-shadow: 0 0 6px currentColor; }
+  /* "Glow" classes are now no-ops on light, legibility comes from weight
+     and color. Kept so existing markup compiles unchanged. */
+  .text-glow      { text-shadow: none; }
+  .text-glow-soft { text-shadow: none; }
 
+  /* A soft, colored, slightly chunky arcade card. currentColor is the accent. */
   .neon-box {
-    border: 1px solid color-mix(in srgb, currentColor 60%, transparent);
+    border: 1.5px solid color-mix(in srgb, currentColor 45%, transparent);
     box-shadow:
-      0 0 0 1px color-mix(in srgb, currentColor 25%, transparent),
-      0 0 14px color-mix(in srgb, currentColor 35%, transparent),
-      inset 0 0 22px color-mix(in srgb, currentColor 10%, transparent);
+      0 1px 0 color-mix(in srgb, currentColor 14%, transparent),
+      0 12px 26px -16px color-mix(in srgb, currentColor 55%, transparent);
   }
 
   .panel {
-    background: linear-gradient(180deg,
-      color-mix(in srgb, var(--color-abyss) 92%, transparent),
-      color-mix(in srgb, var(--color-void) 96%, transparent));
+    background: var(--color-abyss);
     border: 1px solid var(--color-edge);
-    border-radius: 14px;
-    backdrop-filter: blur(2px);
+    border-radius: 16px;
+    box-shadow: 0 10px 26px -18px rgba(22, 35, 58, 0.30);
   }
 
   /* Light-trail underline sweep for active tabs/buttons */
@@ -124,14 +115,17 @@
   }
 
   .anim-flicker { animation: flicker 3.5s linear infinite; }
-  .anim-pulse   { animation: pulse-glow 2s ease-in-out infinite; }
+  .anim-pulse   { animation: pulse-soft 2s ease-in-out infinite; }
   .anim-rise    { animation: rise 0.4s var(--ease-snap) both; }
 
-  /* Route entrance (feature 42): a fast Tron snap-fade-up run on each screen
-     change, plus a thin cyan light-trail that sweeps across once. Additive only
-     and gated for reduced motion below. Under ~320ms, never blocks interaction. */
-  /* overflow-x: clip keeps the light-trail sweep (which parks off the right
-     edge after it finishes) from creating horizontal page scroll on mobile. */
+  /* A reusable dark scrim for modal backdrops (light theme needs to dim down,
+     not up). Use instead of bg-void/NN for overlays. */
+  .scrim { background: color-mix(in srgb, var(--color-ink) 45%, transparent); }
+
+  /* Route entrance (feature 42): a fast snap-fade-up run on each screen change,
+     plus a thin accent light-trail that sweeps across once. Additive only and
+     gated for reduced motion below. overflow-x: clip stops the parked trail
+     from creating horizontal page scroll on mobile. */
   .anim-route { animation: route-in 0.32s var(--ease-snap) both; overflow-x: clip; }
   .anim-route::before {
     content: '';
@@ -149,17 +143,17 @@
 @keyframes trail-sweep { 0% { left: -40%; } 100% { left: 110%; } }
 @keyframes flicker {
   0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; }
-  20%, 22%, 82% { opacity: 0.72; }
+  20%, 22%, 82% { opacity: 0.82; }
 }
-@keyframes pulse-glow {
-  0%, 100% { filter: drop-shadow(0 0 4px currentColor); }
-  50%      { filter: drop-shadow(0 0 16px currentColor); }
+/* Soft arcade pulse, a gentle scale + opacity instead of a neon halo. */
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.04); opacity: 0.92; }
 }
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-/* Route entrance keyframes (feature 42), additive. */
 @keyframes route-in {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -172,5 +166,4 @@
 @media (prefers-reduced-motion: reduce) {
   .trail::after, .anim-flicker, .anim-pulse, .anim-rise,
   .anim-route, .anim-route::before { animation: none; }
-  body::after { display: none; }
 }

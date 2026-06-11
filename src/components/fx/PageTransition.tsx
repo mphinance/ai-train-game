@@ -1,4 +1,4 @@
-// PageTransition: a subtle Tron snap-fade-up applied to route content on every
+// PageTransition: a subtle snap-fade-up applied to route content on every
 // navigation. We re-run the animation by keying a wrapper on the current
 // pathname, so React remounts it and the CSS keyframe fires fresh each route.
 // Reduced motion is fully honored: when the user prefers reduced motion we skip

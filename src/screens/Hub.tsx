@@ -1,4 +1,4 @@
-// The Hub: a Tron grid map. Each mode is a glowing node that navigates on
+// The Hub: a grid map. Each mode is a node that navigates on
 // click or Enter. Landing route. All modes unlocked in v1.
 
 import { useNavigate } from 'react-router-dom';

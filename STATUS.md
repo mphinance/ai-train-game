@@ -1,8 +1,8 @@
 # AI Trainer, build status
 
-**Done. Shipped. 26 of 26 features passing.** A Tron-styled browser game that teaches people
-to talk to AI by playing instead of reading the manual. Fully offline, static-deployable, zero
-API keys, works on a plane.
+**Done. Shipped. 26 of 26 features passing.** A bright, arcade-styled browser game that teaches
+people to talk to AI by playing instead of reading the manual. Fully offline, static-deployable,
+zero API keys, works on a plane.
 
 ## What got built
 
@@ -36,8 +36,10 @@ Four modes, all playable end to end:
 
 Vite 8, React 19, TypeScript strict, Tailwind v4 (CSS-first theme, no config file),
 react-router v7 on a HashRouter so refreshes never 404 on Pages. State is localStorage only.
-The Tron look (cyan grid floor, neon glow, light-trail transitions) lives entirely in theme
-tokens, so there is not a hardcoded hex anywhere in the components.
+The Arcade Paper look (bright paper, jewel-tone accents, soft rounded shadows, friendly rounded
+display font) lives entirely in theme tokens, so there is not a hardcoded hex anywhere in the
+components. It started as a dark Tron theme and got re-skinned to light by swapping tokens alone,
+which is exactly why that token discipline paid off.
 
 ## Verified
 
