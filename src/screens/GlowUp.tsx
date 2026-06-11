@@ -106,6 +106,21 @@ export default function GlowUp() {
 
   const shownScore = useAnimatedNumber(rubric.score);
 
+  // Only the signals this level grades on, in rubric order.
+  const shownSignals = useMemo(
+    () => rubric.signals.filter((s) => requireKeys.includes(s.key as never)),
+    [rubric.signals, requireKeys],
+  );
+
+  // The single signal worth explaining inline: the heaviest still-missing one,
+  // or once everything is lit, the heaviest present one (so the line never empties).
+  const focusSignal = useMemo(() => {
+    const missing = shownSignals.filter((s) => !s.present);
+    const pool = missing.length > 0 ? missing : shownSignals;
+    if (pool.length === 0) return null;
+    return pool.reduce((a, b) => (b.weight > a.weight ? b : a));
+  }, [shownSignals]);
+
   // Fire the win exactly once per level, when the score crosses the threshold.
   useEffect(() => {
     if (rubric.score >= level.winScore && !winLockRef.current) {
@@ -187,25 +202,39 @@ export default function GlowUp() {
             </p>
           </div>
 
-          {/* Signal chips */}
+          {/* Signal chips. Each carries its evidence as a title tooltip and an
+              accessible label, so the player can see WHY a signal lit or what to add. */}
           <div className="flex flex-wrap gap-2" aria-label="Prompt signals">
-            {rubric.signals
-              .filter((s) => requireKeys.includes(s.key as never))
-              .map((sig) => (
-                <span
-                  key={sig.key}
-                  className={[
-                    'rounded-full border px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wider transition-colors',
-                    sig.present
-                      ? 'text-lime neon-box text-glow-soft'
-                      : 'border-edge text-ink-faint',
-                  ].join(' ')}
-                >
-                  {sig.present ? '● ' : '○ '}
-                  {sig.label}
-                </span>
-              ))}
+            {shownSignals.map((sig) => (
+              <span
+                key={sig.key}
+                title={sig.evidence}
+                aria-label={`${sig.label}: ${sig.present ? 'lit' : 'missing'}. ${sig.evidence ?? ''}`}
+                className={[
+                  'rounded-full border px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wider transition-colors',
+                  sig.present
+                    ? 'text-lime neon-box text-glow-soft'
+                    : 'border-edge text-ink-faint',
+                ].join(' ')}
+              >
+                {sig.present ? '● ' : '○ '}
+                {sig.label}
+              </span>
+            ))}
           </div>
+
+          {/* Why line: visible, on-theme evidence for the single most relevant
+              signal (the top missing one, or the heaviest lit one once clean).
+              Keeps the rubric transparent without cluttering the chip row. */}
+          {focusSignal ? (
+            <p className="font-mono text-xs text-ink-faint">
+              <span className={focusSignal.present ? 'text-lime' : 'text-orange'}>
+                {focusSignal.present ? '● ' : '○ '}
+                {focusSignal.label}:
+              </span>{' '}
+              {focusSignal.evidence}
+            </p>
+          ) : null}
 
           {/* Hint from topFix */}
           {!won && rubric.topFix ? (

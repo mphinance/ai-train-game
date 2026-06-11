@@ -334,6 +334,16 @@ function ChallengeModal({ card, alreadyDone, onClose }: ChallengeModalProps) {
     }
   }
 
+  // Evidence for the single signal topFix is about (the heaviest missing one),
+  // so the "Next time" line can show what to add, not just a generic tip.
+  const focusEvidence = useMemo(() => {
+    if (!result) return null;
+    const missing = result.signals.filter((s) => !s.present);
+    if (missing.length === 0) return null;
+    const heaviest = missing.reduce((a, b) => (b.weight > a.weight ? b : a));
+    return heaviest.evidence ?? null;
+  }, [result]);
+
   const canSubmit = text.trim().length > 0 && !result;
   const titleId = `challenge-${card.id}`;
 
@@ -418,10 +428,40 @@ function ChallengeModal({ card, alreadyDone, onClose }: ChallengeModalProps) {
               </p>
             </div>
 
+            {/* Transparent signal chips. Each carries its evidence as a title
+                tooltip and an accessible label, so the player sees WHY a signal
+                lit or what to add next time. */}
+            <div
+              className="mt-3 flex flex-wrap gap-1.5"
+              aria-label="Prompt signals and why they lit"
+            >
+              {result.signals.map((sig) => (
+                <span
+                  key={sig.key}
+                  title={sig.evidence}
+                  aria-label={`${sig.label}: ${sig.present ? 'lit' : 'missing'}. ${sig.evidence ?? ''}`}
+                  className={[
+                    'rounded-full border px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider',
+                    sig.present
+                      ? 'text-lime neon-box text-glow-soft'
+                      : 'border-edge text-ink-faint',
+                  ].join(' ')}
+                >
+                  {sig.present ? '● ' : '○ '}
+                  {sig.label}
+                </span>
+              ))}
+            </div>
+
             {result.topFix ? (
               <p className="mt-3 text-sm text-ink-soft">
                 <span className="text-orange text-glow-soft">Next time:</span>{' '}
                 {result.topFix}
+                {focusEvidence ? (
+                  <span className="block font-mono text-xs text-ink-faint">
+                    {focusEvidence}
+                  </span>
+                ) : null}
               </p>
             ) : null}
 

@@ -37,6 +37,26 @@ describe('rubric: signal detection', () => {
       expect(map[key], `expected ${key} present`).toBe(true);
     }
   });
+
+  it('catches natural audience phrasings the old keyword set missed', () => {
+    // The previously-missed case: an implied audience with "for me and one
+    // picky teenager" must now register as an AUDIENCE signal.
+    expect(signalMap('Plan dinners. It is for me and one picky teenager.').audience).toBe(
+      true,
+    );
+    // A few more natural phrasings should also light the audience signal.
+    expect(signalMap('Summarize this for my boss.').audience).toBe(true);
+    expect(signalMap('Explain it to a beginner.').audience).toBe(true);
+    expect(signalMap('Make a snack the kids will eat.').audience).toBe(true);
+  });
+
+  it('catches natural constraint and format phrasings', () => {
+    expect(signalMap('Keep it under 200 words.').constraints).toBe(true);
+    expect(signalMap('Give me a 20 minute recipe.').constraints).toBe(true);
+    expect(signalMap('No cilantro please.').constraints).toBe(true);
+    expect(signalMap('Put it in a numbered list.').format).toBe(true);
+    expect(signalMap('Lay it out as a table.').format).toBe(true);
+  });
 });
 
 describe('rubric: scoring', () => {
@@ -67,6 +87,24 @@ describe('rubric: scoring', () => {
       expect(typeof s.tip).toBe('string');
       expect(s.tip.length).toBeGreaterThan(0);
       expect(s.tip).not.toContain(String.fromCharCode(0x2014)); // no em dash character
+    }
+  });
+
+  it('populates evidence for both a present and an absent signal', () => {
+    // STRONG_PROMPT lights role (present) and a weak prompt leaves role absent.
+    const strong = scorePrompt(STRONG_PROMPT).signals.find((s) => s.key === 'role');
+    expect(strong?.present).toBe(true);
+    expect(typeof strong?.evidence).toBe('string');
+    expect((strong?.evidence ?? '').length).toBeGreaterThan(0);
+
+    const absent = scorePrompt(WEAK_PROMPT).signals.find((s) => s.key === 'role');
+    expect(absent?.present).toBe(false);
+    expect(typeof absent?.evidence).toBe('string');
+    expect((absent?.evidence ?? '').length).toBeGreaterThan(0);
+
+    // Evidence is honest copy too: no em dashes anywhere.
+    for (const s of scorePrompt(STRONG_PROMPT).signals) {
+      expect(s.evidence ?? '').not.toContain(String.fromCharCode(0x2014));
     }
   });
 });

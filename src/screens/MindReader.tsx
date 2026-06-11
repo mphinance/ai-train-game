@@ -18,10 +18,60 @@ import {
   type MindReaderGoal,
 } from '../engine';
 
-// Deterministic, case-insensitive substring detection. A teaching signal, not a grader.
+// Synonym-aware matching. The old matcher only counted a requirement when its exact
+// literal phrase appeared, so "no meat" failed the "vegetarian" requirement even though
+// the player nailed the intent. This map lets equivalent phrasings satisfy a requirement.
+// Keep it DETERMINISTIC: a requirement counts if the requirement OR any synonym appears
+// in the normalized prompt. Keyed by the requirement string used in src/data/mindreader.ts.
+const SYNONYMS: Record<string, string[]> = {
+  // gymbro-meals
+  '3 day': ['three day', '3 days', 'three days', 'over 3 days', 'over three days'],
+  vegetarian: ['no meat', 'veggie', 'plant based', 'meatless', 'meat free', 'no meat at all'],
+  'no mushrooms': ['without mushrooms', 'hates mushrooms', 'no mushroom', 'skip the mushrooms', 'no fungi'],
+  'high protein': ['protein rich', 'lots of protein', 'high in protein', 'tons of protein', 'protein packed'],
+  // cold-email
+  'cold email': ['cold outreach', 'outreach email', 'cold message', 'intro email'],
+  'under 100 words': ['less than 100 words', 'fewer than 100 words', 'under a hundred words', 'max 100 words', 'no more than 100 words'],
+  friendly: ['warm', 'warm tone', 'approachable', 'casual', 'kind tone'],
+  'call to action': ['cta', 'clear ask', 'one ask', 'next step', 'one clear ask'],
+  // tokyo-trip
+  '5 day': ['five day', '5 days', 'five days', 'over 5 days'],
+  tokyo: ['in tokyo', 'tokyo japan'],
+  budget: ['cheap', 'affordable', 'low cost', 'on a budget', 'budget friendly', 'inexpensive'],
+  food: ['food spots', 'places to eat', 'where to eat', 'restaurants', 'eats', 'good eats'],
+  'public transit': ['public transport', 'metro', 'subway', 'trains', 'transit', 'getting around by train'],
+  // study-plan
+  '1 week': ['one week', '7 day', 'seven day', '7 days', 'seven days', 'a week'],
+  python: ['the python language', 'python programming'],
+  beginner: ['novice', 'newbie', 'just starting', 'brand new', 'no experience', 'starting out'],
+  '1 hour': ['one hour', 'an hour', '60 minutes', 'sixty minutes', 'hour a day', 'hour per day'],
+  free: ['no cost', 'zero cost', 'no money', 'without paying', 'free resources', 'free only'],
+  // kid-bedtime
+  'bedtime story': ['bed time story', 'story for bed', 'story before bed', 'goodnight story'],
+  '5 year old': ['five year old', '5yo', 'five-year-old', 'age 5', 'aged 5'],
+  dinosaur: ['dino', 'dinosaurs', 't rex', 't-rex'],
+  'calm ending': ['gentle ending', 'soft ending', 'peaceful ending', 'soothing ending', 'cozy ending', 'calm finish'],
+  'not scary': ['no scary', 'nothing scary', 'no scary parts', 'not frightening', 'no frightening', 'not spooky', 'no spooky'],
+};
+
+// Normalize for matching: lowercase, collapse hyphens to spaces, and squeeze whitespace.
+// This makes "3-day", "3  day" and "3 day" all line up, plus hyphen/space variants.
+function normalize(text: string): string {
+  return text.toLowerCase().replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// A requirement is present if the normalized requirement OR any of its synonyms appears
+// in the normalized prompt. Simple singular/plural is covered by listing both variants.
+function requirementPresent(haystack: string, req: string): boolean {
+  const phrases = [req, ...(SYNONYMS[req] ?? [])];
+  return phrases.some((phrase) => haystack.includes(normalize(phrase)));
+}
+
+// Deterministic, synonym-aware detection of what is still missing. A teaching signal,
+// not a grader.
 function detectMissing(prompt: string, requirements: string[]): string[] {
-  const hay = prompt.toLowerCase();
-  return requirements.filter((req) => !hay.includes(req.toLowerCase()));
+  const hay = normalize(prompt);
+  return requirements.filter((req) => !requirementPresent(hay, req));
 }
 
 // Gentle nudge toward ONE missing requirement without handing over the keyword.

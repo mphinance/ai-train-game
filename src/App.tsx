@@ -3,6 +3,7 @@
 
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Hud from './components/hud/Hud';
+import Onboarding from './components/Onboarding';
 import PageTransition from './components/fx/PageTransition';
 import Hub from './screens/Hub';
 import GlowUp from './screens/GlowUp';
@@ -16,7 +17,7 @@ export default function App() {
     <HashRouter>
       <div className="flex min-h-screen flex-col">
         <Hud />
-        <main className="flex-1 pb-12">
+        <main className="flex-1">
           <PageTransition>
             <Routes>
               <Route path="/" element={<Hub />} />
@@ -29,6 +30,21 @@ export default function App() {
             </Routes>
           </PageTransition>
         </main>
+        <footer className="px-4 py-6 text-center">
+          <p className="font-mono text-xs text-ink-faint">
+            Built by{' '}
+            <a
+              href="https://mphinance.substack.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink-soft underline-offset-2 transition-colors hover:text-cyan hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded"
+            >
+              Michael Hanko
+            </a>
+          </p>
+        </footer>
+        {/* First-run onboarding overlay. Self-gates to first visit and dismisses cleanly. */}
+        <Onboarding />
       </div>
     </HashRouter>
   );

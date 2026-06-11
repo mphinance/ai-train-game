@@ -11,6 +11,7 @@ export interface SignalResult {
   present: boolean;
   weight: number;       // contribution to score, 0..1 summing roughly to 1 across signals
   tip: string;          // short, playful, NO EM DASHES. e.g. "Tell it who to be."
+  evidence?: string;    // optional transparency: why a signal lit (matched phrase) or what to add. NO EM DASHES.
 }
 
 export type Tier = 'weak' | 'okay' | 'strong' | 'elite';
