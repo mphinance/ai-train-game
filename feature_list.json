@@ -91,7 +91,7 @@
       "confirm chapter list",
       "confirm links go to /guide/:slug"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 9,
@@ -103,7 +103,7 @@
       "confirm rendered prose",
       "confirm prev/next works"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 10,
@@ -127,7 +127,7 @@
       "confirm PracticeBox appears inline",
       "confirm it scores input"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 12,
@@ -163,7 +163,7 @@
       "confirm >=6 drills",
       "complete one"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 15,
@@ -175,7 +175,7 @@
       "filter by a goal",
       "confirm entries change"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 16,
@@ -199,7 +199,7 @@
       "confirm JSON written",
       "confirm entries have goal+prompt+source"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 18,
@@ -211,7 +211,7 @@
       "confirm 8 files",
       "confirm each parses"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 19,
@@ -223,7 +223,7 @@
       "confirm none",
       "spot-check tone"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 20,
@@ -235,7 +235,7 @@
       "confirm >=4",
       "confirm each has gym spec"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 21,
