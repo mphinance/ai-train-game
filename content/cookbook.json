@@ -1,0 +1,14 @@
+[
+  {
+    "goal": "writing",
+    "title": "Turn rough notes into a clean first draft",
+    "prompt": "You are a sharp editor. Here are my messy notes for a blog post. Turn them into a clear 400 word draft for a general audience, in a warm and plain voice, with a short intro and three sections. Notes:",
+    "source": "placeholder, replaced by scripts/gen-cookbook.mjs"
+  },
+  {
+    "goal": "cooking",
+    "title": "A week of dinners from what you already have",
+    "prompt": "Act as a practical home cook. Here is what is in my fridge and pantry. Give me five weeknight dinners that use mostly these, each under 30 minutes, as a simple numbered list with the missing ingredients flagged. I have:",
+    "source": "placeholder, replaced by scripts/gen-cookbook.mjs"
+  }
+]

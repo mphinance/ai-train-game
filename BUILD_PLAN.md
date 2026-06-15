@@ -179,4 +179,3 @@ Repo stays `ai-train-game` (URL stability); only the site title + epub title cha
 ## Model tiering summary (rule 11)
 Wave 0 Haiku/Sonnet · Wave 1 **Opus** · Wave 2 Sonnet · Wave 3 A/B/C Sonnet, **D Opus** (voice) ·
 Wave 4 epub Sonnet, polish Opus · Wave 5 orchestrator (you).
-</content>

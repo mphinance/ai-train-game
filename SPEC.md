@@ -66,4 +66,3 @@ shipped copy, responsive to 375px, zero runtime network calls.
 ## Out of scope
 No backend, no accounts, no analytics, no LLM API calls, no payment. Translations out of scope. The
 `../ai-cookbook/sources/` clones are NOT bundled; the Cookbook Browser uses a small generated JSON index.
-</content>

@@ -28,4 +28,3 @@
   { "id": 27, "category": "functional", "wave": 5, "description": "Zero runtime network calls; app works offline after first load", "steps": ["grep src for fetch/axios/XMLHttpRequest", "confirm none at runtime", "load offline"], "passes": false },
   { "id": 28, "category": "style", "wave": 5, "description": "Responsive to 375px with no horizontal scroll; keyboard navigable; reduced motion honored", "steps": ["resize to 375px", "tab through", "confirm focus rings + no x-scroll"], "passes": false }
 ]
-</content>
