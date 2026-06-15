@@ -1,30 +1,334 @@
 [
-  { "id": 1, "category": "functional", "wave": 0, "description": "Project builds clean: npm run build exits 0 with no TypeScript errors", "steps": ["run npm run build", "confirm exit 0", "confirm no TS errors"], "passes": false },
-  { "id": 2, "category": "functional", "wave": 1, "description": "Content loader returns chapters parsed from Markdown frontmatter, sorted by order", "steps": ["call loadChapters()", "confirm array sorted by order", "confirm title/slug/summary populated"], "passes": false },
-  { "id": 3, "category": "functional", "wave": 1, "description": "App routes resolve: /, /guide/:slug, /gym, /cookbook all mount without error", "steps": ["visit each route", "confirm a screen renders", "confirm unknown route falls back to home"], "passes": false },
-  { "id": 4, "category": "functional", "wave": 1, "description": "PracticeSpec + Chapter types exported from src/content/types.ts and consumed by screens", "steps": ["import types", "confirm tsc passes"], "passes": false },
-  { "id": 5, "category": "style", "wave": 2, "description": "Editorial reskin: theme token VALUES swapped, no arcade/Fredoka look, components unchanged", "steps": ["inspect index.css tokens", "confirm serious palette + fonts", "confirm build still passes"], "passes": false },
-  { "id": 6, "category": "functional", "wave": 2, "description": "App shell has a clean top nav (Guide / Gym / Cookbook) and a Substack footer; no game HUD", "steps": ["load app", "confirm nav links", "confirm no XP/score HUD"], "passes": false },
-  { "id": 7, "category": "functional", "wave": 2, "description": "Onboarding/'jack in' overlay and HUD components are removed", "steps": ["grep src for Hud/Onboarding usage", "confirm none referenced"], "passes": false },
-  { "id": 8, "category": "functional", "wave": 3, "description": "GuideHome renders a table of contents listing every chapter in order with summaries", "steps": ["visit /", "confirm chapter list", "confirm links go to /guide/:slug"], "passes": false },
-  { "id": 9, "category": "functional", "wave": 3, "description": "ChapterReader renders chapter body as Markdown with prev/next navigation", "steps": ["open a chapter", "confirm rendered prose", "confirm prev/next works"], "passes": false },
-  { "id": 10, "category": "functional", "wave": 3, "description": "Reading position is remembered via storage.ts (bookmark), not XP", "steps": ["scroll/advance", "reload", "confirm last chapter surfaced"], "passes": false },
-  { "id": 11, "category": "functional", "wave": 3, "description": "A line of only ::practice:: in a chapter renders an inline working PracticeBox", "steps": ["open a chapter with gym frontmatter", "confirm PracticeBox appears inline", "confirm it scores input"], "passes": false },
-  { "id": 12, "category": "functional", "wave": 3, "description": "PracticeBox shows a live rubric score, per-signal feedback, and the top fix as the user types", "steps": ["type a weak prompt", "confirm low score + topFix", "improve prompt", "confirm score rises"], "passes": false },
-  { "id": 13, "category": "functional", "wave": 3, "description": "PracticeBox honors a spec's require[] so a drill grades only on its target signals", "steps": ["load a drill with require", "confirm only those signals count"], "passes": false },
-  { "id": 14, "category": "functional", "wave": 3, "description": "Standalone /gym lists at least 6 practice drills, each independently scored", "steps": ["visit /gym", "confirm >=6 drills", "complete one"], "passes": false },
-  { "id": 15, "category": "functional", "wave": 3, "description": "Cookbook Browser lists AI-use entries grouped/filterable by real-life goal", "steps": ["visit /cookbook", "filter by a goal", "confirm entries change"], "passes": false },
-  { "id": 16, "category": "functional", "wave": 3, "description": "Each Cookbook entry has a copy-able starter prompt with a working copy button", "steps": ["click copy on an entry", "confirm clipboard write", "confirm visual confirmation"], "passes": false },
-  { "id": 17, "category": "functional", "wave": 3, "description": "content/cookbook.json is generated from ../ai-cookbook by scripts/gen-cookbook.mjs", "steps": ["run gen-cookbook", "confirm JSON written", "confirm entries have goal+prompt+source"], "passes": false },
-  { "id": 18, "category": "content", "wave": 3, "description": "All 8 chapters exist as Markdown in content/chapters with valid frontmatter", "steps": ["list content/chapters", "confirm 8 files", "confirm each parses"], "passes": false },
-  { "id": 19, "category": "content", "wave": 3, "description": "Chapters are in Michael's voice: adult, practical, NO em dashes, no markdown tables", "steps": ["grep chapters for em dash", "confirm none", "spot-check tone"], "passes": false },
-  { "id": 20, "category": "content", "wave": 3, "description": "At least 4 chapters embed a ::practice:: drill with a matching gym frontmatter block", "steps": ["grep ::practice::", "confirm >=4", "confirm each has gym spec"], "passes": false },
-  { "id": 21, "category": "functional", "wave": 4, "description": "scripts/build-epub.mjs produces public/downloads/practical-ai.epub from the chapters", "steps": ["run npm run epub", "confirm epub file created", "confirm all chapters present in order"], "passes": false },
-  { "id": 22, "category": "functional", "wave": 4, "description": "epub strips web-only ::practice:: directives and contains clean prose", "steps": ["unzip epub", "grep for ::practice::", "confirm none"], "passes": false },
-  { "id": 23, "category": "functional", "wave": 4, "description": "GuideHome shows a 'Download the ebook' CTA linking to the epub", "steps": ["visit /", "confirm CTA", "confirm link resolves to the epub path"], "passes": false },
-  { "id": 24, "category": "style", "wave": 4, "description": "OG/social cards and <title> updated to Practical AI (no leftover AI Trainer/game copy)", "steps": ["view index.html head", "confirm title + og:* updated"], "passes": false },
-  { "id": 25, "category": "functional", "wave": 4, "description": "All KILL-list game files removed; no dead imports remain", "steps": ["confirm deleted files gone", "run build", "confirm no missing-import errors"], "passes": false },
-  { "id": 26, "category": "functional", "wave": 5, "description": "Existing rubric/engine unit tests still pass (npm test)", "steps": ["run npm test", "confirm rubric.test + others green"], "passes": false },
-  { "id": 27, "category": "functional", "wave": 5, "description": "Zero runtime network calls; app works offline after first load", "steps": ["grep src for fetch/axios/XMLHttpRequest", "confirm none at runtime", "load offline"], "passes": false },
-  { "id": 28, "category": "style", "wave": 5, "description": "Responsive to 375px with no horizontal scroll; keyboard navigable; reduced motion honored", "steps": ["resize to 375px", "tab through", "confirm focus rings + no x-scroll"], "passes": false }
+  {
+    "id": 1,
+    "category": "functional",
+    "wave": 0,
+    "description": "Project builds clean: npm run build exits 0 with no TypeScript errors",
+    "steps": [
+      "run npm run build",
+      "confirm exit 0",
+      "confirm no TS errors"
+    ],
+    "passes": true
+  },
+  {
+    "id": 2,
+    "category": "functional",
+    "wave": 1,
+    "description": "Content loader returns chapters parsed from Markdown frontmatter, sorted by order",
+    "steps": [
+      "call loadChapters()",
+      "confirm array sorted by order",
+      "confirm title/slug/summary populated"
+    ],
+    "passes": true
+  },
+  {
+    "id": 3,
+    "category": "functional",
+    "wave": 1,
+    "description": "App routes resolve: /, /guide/:slug, /gym, /cookbook all mount without error",
+    "steps": [
+      "visit each route",
+      "confirm a screen renders",
+      "confirm unknown route falls back to home"
+    ],
+    "passes": true
+  },
+  {
+    "id": 4,
+    "category": "functional",
+    "wave": 1,
+    "description": "PracticeSpec + Chapter types exported from src/content/types.ts and consumed by screens",
+    "steps": [
+      "import types",
+      "confirm tsc passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": 5,
+    "category": "style",
+    "wave": 2,
+    "description": "Editorial reskin: theme token VALUES swapped, no arcade/Fredoka look, components unchanged",
+    "steps": [
+      "inspect index.css tokens",
+      "confirm serious palette + fonts",
+      "confirm build still passes"
+    ],
+    "passes": false
+  },
+  {
+    "id": 6,
+    "category": "functional",
+    "wave": 2,
+    "description": "App shell has a clean top nav (Guide / Gym / Cookbook) and a Substack footer; no game HUD",
+    "steps": [
+      "load app",
+      "confirm nav links",
+      "confirm no XP/score HUD"
+    ],
+    "passes": false
+  },
+  {
+    "id": 7,
+    "category": "functional",
+    "wave": 2,
+    "description": "Onboarding/'jack in' overlay and HUD components are removed",
+    "steps": [
+      "grep src for Hud/Onboarding usage",
+      "confirm none referenced"
+    ],
+    "passes": false
+  },
+  {
+    "id": 8,
+    "category": "functional",
+    "wave": 3,
+    "description": "GuideHome renders a table of contents listing every chapter in order with summaries",
+    "steps": [
+      "visit /",
+      "confirm chapter list",
+      "confirm links go to /guide/:slug"
+    ],
+    "passes": false
+  },
+  {
+    "id": 9,
+    "category": "functional",
+    "wave": 3,
+    "description": "ChapterReader renders chapter body as Markdown with prev/next navigation",
+    "steps": [
+      "open a chapter",
+      "confirm rendered prose",
+      "confirm prev/next works"
+    ],
+    "passes": false
+  },
+  {
+    "id": 10,
+    "category": "functional",
+    "wave": 3,
+    "description": "Reading position is remembered via storage.ts (bookmark), not XP",
+    "steps": [
+      "scroll/advance",
+      "reload",
+      "confirm last chapter surfaced"
+    ],
+    "passes": false
+  },
+  {
+    "id": 11,
+    "category": "functional",
+    "wave": 3,
+    "description": "A line of only ::practice:: in a chapter renders an inline working PracticeBox",
+    "steps": [
+      "open a chapter with gym frontmatter",
+      "confirm PracticeBox appears inline",
+      "confirm it scores input"
+    ],
+    "passes": false
+  },
+  {
+    "id": 12,
+    "category": "functional",
+    "wave": 3,
+    "description": "PracticeBox shows a live rubric score, per-signal feedback, and the top fix as the user types",
+    "steps": [
+      "type a weak prompt",
+      "confirm low score + topFix",
+      "improve prompt",
+      "confirm score rises"
+    ],
+    "passes": false
+  },
+  {
+    "id": 13,
+    "category": "functional",
+    "wave": 3,
+    "description": "PracticeBox honors a spec's require[] so a drill grades only on its target signals",
+    "steps": [
+      "load a drill with require",
+      "confirm only those signals count"
+    ],
+    "passes": false
+  },
+  {
+    "id": 14,
+    "category": "functional",
+    "wave": 3,
+    "description": "Standalone /gym lists at least 6 practice drills, each independently scored",
+    "steps": [
+      "visit /gym",
+      "confirm >=6 drills",
+      "complete one"
+    ],
+    "passes": false
+  },
+  {
+    "id": 15,
+    "category": "functional",
+    "wave": 3,
+    "description": "Cookbook Browser lists AI-use entries grouped/filterable by real-life goal",
+    "steps": [
+      "visit /cookbook",
+      "filter by a goal",
+      "confirm entries change"
+    ],
+    "passes": false
+  },
+  {
+    "id": 16,
+    "category": "functional",
+    "wave": 3,
+    "description": "Each Cookbook entry has a copy-able starter prompt with a working copy button",
+    "steps": [
+      "click copy on an entry",
+      "confirm clipboard write",
+      "confirm visual confirmation"
+    ],
+    "passes": false
+  },
+  {
+    "id": 17,
+    "category": "functional",
+    "wave": 3,
+    "description": "content/cookbook.json is generated from ../ai-cookbook by scripts/gen-cookbook.mjs",
+    "steps": [
+      "run gen-cookbook",
+      "confirm JSON written",
+      "confirm entries have goal+prompt+source"
+    ],
+    "passes": false
+  },
+  {
+    "id": 18,
+    "category": "content",
+    "wave": 3,
+    "description": "All 8 chapters exist as Markdown in content/chapters with valid frontmatter",
+    "steps": [
+      "list content/chapters",
+      "confirm 8 files",
+      "confirm each parses"
+    ],
+    "passes": false
+  },
+  {
+    "id": 19,
+    "category": "content",
+    "wave": 3,
+    "description": "Chapters are in Michael's voice: adult, practical, NO em dashes, no markdown tables",
+    "steps": [
+      "grep chapters for em dash",
+      "confirm none",
+      "spot-check tone"
+    ],
+    "passes": false
+  },
+  {
+    "id": 20,
+    "category": "content",
+    "wave": 3,
+    "description": "At least 4 chapters embed a ::practice:: drill with a matching gym frontmatter block",
+    "steps": [
+      "grep ::practice::",
+      "confirm >=4",
+      "confirm each has gym spec"
+    ],
+    "passes": false
+  },
+  {
+    "id": 21,
+    "category": "functional",
+    "wave": 4,
+    "description": "scripts/build-epub.mjs produces public/downloads/practical-ai.epub from the chapters",
+    "steps": [
+      "run npm run epub",
+      "confirm epub file created",
+      "confirm all chapters present in order"
+    ],
+    "passes": false
+  },
+  {
+    "id": 22,
+    "category": "functional",
+    "wave": 4,
+    "description": "epub strips web-only ::practice:: directives and contains clean prose",
+    "steps": [
+      "unzip epub",
+      "grep for ::practice::",
+      "confirm none"
+    ],
+    "passes": false
+  },
+  {
+    "id": 23,
+    "category": "functional",
+    "wave": 4,
+    "description": "GuideHome shows a 'Download the ebook' CTA linking to the epub",
+    "steps": [
+      "visit /",
+      "confirm CTA",
+      "confirm link resolves to the epub path"
+    ],
+    "passes": false
+  },
+  {
+    "id": 24,
+    "category": "style",
+    "wave": 4,
+    "description": "OG/social cards and <title> updated to Practical AI (no leftover AI Trainer/game copy)",
+    "steps": [
+      "view index.html head",
+      "confirm title + og:* updated"
+    ],
+    "passes": false
+  },
+  {
+    "id": 25,
+    "category": "functional",
+    "wave": 4,
+    "description": "All KILL-list game files removed; no dead imports remain",
+    "steps": [
+      "confirm deleted files gone",
+      "run build",
+      "confirm no missing-import errors"
+    ],
+    "passes": false
+  },
+  {
+    "id": 26,
+    "category": "functional",
+    "wave": 5,
+    "description": "Existing rubric/engine unit tests still pass (npm test)",
+    "steps": [
+      "run npm test",
+      "confirm rubric.test + others green"
+    ],
+    "passes": false
+  },
+  {
+    "id": 27,
+    "category": "functional",
+    "wave": 5,
+    "description": "Zero runtime network calls; app works offline after first load",
+    "steps": [
+      "grep src for fetch/axios/XMLHttpRequest",
+      "confirm none at runtime",
+      "load offline"
+    ],
+    "passes": false
+  },
+  {
+    "id": 28,
+    "category": "style",
+    "wave": 5,
+    "description": "Responsive to 375px with no horizontal scroll; keyboard navigable; reduced motion honored",
+    "steps": [
+      "resize to 375px",
+      "tab through",
+      "confirm focus rings + no x-scroll"
+    ],
+    "passes": false
+  }
 ]
