@@ -13,6 +13,8 @@
     "epub": "node scripts/build-epub.mjs"
   },
   "dependencies": {
+    "epub-gen-memory": "^1.1.2",
+    "marked": "^18.0.5",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-markdown": "^10.1.0",
