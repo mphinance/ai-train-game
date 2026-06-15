@@ -247,7 +247,7 @@
       "confirm epub file created",
       "confirm all chapters present in order"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 22,
@@ -259,7 +259,7 @@
       "grep for ::practice::",
       "confirm none"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 23,
@@ -271,7 +271,7 @@
       "confirm CTA",
       "confirm link resolves to the epub path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 24,
@@ -282,7 +282,7 @@
       "view index.html head",
       "confirm title + og:* updated"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 25,
@@ -294,7 +294,7 @@
       "run build",
       "confirm no missing-import errors"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 26,
