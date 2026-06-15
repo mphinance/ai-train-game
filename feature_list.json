@@ -115,7 +115,7 @@
       "reload",
       "confirm last chapter surfaced"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 11,
@@ -140,7 +140,7 @@
       "improve prompt",
       "confirm score rises"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 13,
@@ -151,7 +151,7 @@
       "load a drill with require",
       "confirm only those signals count"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 14,
@@ -187,7 +187,7 @@
       "confirm clipboard write",
       "confirm visual confirmation"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 17,
@@ -305,7 +305,7 @@
       "run npm test",
       "confirm rubric.test + others green"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 27,
@@ -317,7 +317,7 @@
       "confirm none at runtime",
       "load offline"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 28,
@@ -329,6 +329,6 @@
       "tab through",
       "confirm focus rings + no x-scroll"
     ],
-    "passes": false
+    "passes": true
   }
 ]
