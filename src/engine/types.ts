@@ -3,7 +3,11 @@
 
 export type SignalKey =
   | 'role' | 'context' | 'audience' | 'format' | 'constraints'
-  | 'examples' | 'tone' | 'specificity' | 'stepwise' | 'lengthFit';
+  | 'examples' | 'tone' | 'specificity' | 'stepwise' | 'lengthFit'
+  // Advanced signals, used only by Boot Camp drills (the intermediate track).
+  // They never count in the default ten-signal score, so beginner scoring is
+  // unchanged. They contribute only when a drill names them in require[].
+  | 'decomposition' | 'verification';
 
 export interface SignalResult {
   key: SignalKey;

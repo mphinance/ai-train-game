@@ -44,7 +44,9 @@ function parseFrontmatter(raw) {
   if (!match) return {};
   const block = match[1];
   const result = {};
-  for (const line of block.split('\n')) {
+  // Split on either line ending. Chapters authored on Windows are CRLF, and a
+  // leftover \r would break the value regex and drop the chapter to order 999.
+  for (const line of block.split(/\r?\n/)) {
     const kv = line.match(/^(\w+):\s*(.+)$/);
     if (kv) {
       const key = kv[1].trim();

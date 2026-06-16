@@ -6,6 +6,7 @@ import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
 import GuideHome from './screens/GuideHome';
 import ChapterReader from './screens/ChapterReader';
 import Gym from './screens/Gym';
+import BootCamp from './screens/BootCamp';
 import Cookbook from './screens/Cookbook';
 
 // Minimal nav, pre-staged by Wave 1. Wave 2 reskins this into the real top bar.
@@ -17,6 +18,7 @@ function Nav() {
       <NavLink to="/" className="mr-auto font-display text-lg">Practical AI</NavLink>
       <NavLink to="/" end className={cls}>Guide</NavLink>
       <NavLink to="/gym" className={cls}>Gym</NavLink>
+      <NavLink to="/bootcamp" className={cls}>Boot Camp</NavLink>
       <NavLink to="/cookbook" className={cls}>Cookbook</NavLink>
     </nav>
   );
@@ -32,6 +34,7 @@ export default function App() {
             <Route path="/" element={<GuideHome />} />
             <Route path="/guide/:slug" element={<ChapterReader />} />
             <Route path="/gym" element={<Gym />} />
+            <Route path="/bootcamp" element={<BootCamp />} />
             <Route path="/cookbook" element={<Cookbook />} />
             <Route path="*" element={<GuideHome />} />
           </Routes>

@@ -59,6 +59,55 @@ describe('rubric: signal detection', () => {
   });
 });
 
+describe('rubric: advanced Boot Camp signals', () => {
+  it('detects decomposition when the prompt splits work into parts or roles', () => {
+    const r1 = scorePrompt('Break this into parts: a researcher gathers facts, a writer drafts.', {
+      require: ['decomposition'],
+    });
+    expect(r1.signals.find((s) => s.key === 'decomposition')?.present).toBe(true);
+    expect(scorePrompt('Act as three specialists in turn and hand off between them.', {
+      require: ['decomposition'],
+    }).signals.find((s) => s.key === 'decomposition')?.present).toBe(true);
+    expect(scorePrompt('Do it in stages. 1) outline. 2) draft. 3) polish.', {
+      require: ['decomposition'],
+    }).signals.find((s) => s.key === 'decomposition')?.present).toBe(true);
+  });
+
+  it('detects verification when the prompt asks the model to check itself', () => {
+    for (const p of [
+      'Write the answer, then double-check your work and fix any mistakes.',
+      'Critique your own draft and find the weak spots before showing me.',
+      'Verify the facts and cite your sources.',
+    ]) {
+      expect(
+        scorePrompt(p, { require: ['verification'] }).signals.find((s) => s.key === 'verification')
+          ?.present,
+        `expected verification in: ${p}`,
+      ).toBe(true);
+    }
+  });
+
+  it('does NOT include advanced signals in the default ten-signal score', () => {
+    const result = scorePrompt('Break this into parts and double-check your work.');
+    expect(result.signals).toHaveLength(10);
+    expect(result.signals.some((s) => s.key === 'decomposition')).toBe(false);
+    expect(result.signals.some((s) => s.key === 'verification')).toBe(false);
+  });
+
+  it('grades a Boot Camp drill on its required advanced signals', () => {
+    const good = scorePrompt(
+      'Break this into a researcher, a writer, and a checker, then have it verify its own work.',
+      { require: ['decomposition', 'verification'] },
+    );
+    expect(good.score).toBe(100);
+    const bad = scorePrompt('write me a business plan', {
+      require: ['decomposition', 'verification'],
+    });
+    expect(bad.score).toBeLessThan(100);
+    expect(bad.topFix).not.toBeNull();
+  });
+});
+
 describe('rubric: scoring', () => {
   it('scores a strong prompt high (>80)', () => {
     expect(scorePrompt(STRONG_PROMPT).score).toBeGreaterThan(80);

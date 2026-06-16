@@ -186,6 +186,44 @@ const SIGNAL_DEFS: SignalDef[] = [
   },
 ];
 
+// Advanced signals power the Boot Camp (intermediate) drills. They are kept out
+// of SIGNAL_DEFS on purpose: the default score is still the ten core signals, so
+// the beginner Gym and the existing tests are untouched. An advanced signal only
+// counts when a drill lists it in require[]. Same offline, heuristic philosophy.
+const ADVANCED_SIGNAL_DEFS: SignalDef[] = [
+  {
+    key: 'decomposition',
+    label: 'Decomposition',
+    weight: 0.12,
+    tip: 'Split the job into parts or roles.',
+    missing: 'One big ask. Break it into parts, roles, or stages the model handles in turn.',
+    detect: (_p, lower) => {
+      // Explicit "break this up / hand it to roles / do it in stages" language.
+      const kw = firstMatch(
+        lower,
+        /\b(break (?:it|this|the \w+) (?:down|into)|split (?:it|this|the)\b|divide (?:it|this|the)\b|in (?:stages|phases|passes|steps)|step 1\b|stage 1\b|phase (?:1|one)\b|sub-?tasks?|subtasks?|sub-?agents?|team of|specialists?|a (?:researcher|writer|editor|critic|reviewer|planner|checker|fact-?checker|drafter|analyst)\b|act as (?:three|several|multiple|a team)|one (?:agent|model|pass|step)\b[\s\S]{0,60}\b(?:another|second|next|then)\b|first\b[\s\S]{0,60}\bthen\b[\s\S]{0,60}\b(?:then|finally)\b|hand (?:it|this) off|delegate|assign (?:each|the|a|every)|pipeline)\b/,
+      );
+      if (kw) return { present: true, hit: kw };
+      // An enumerated plan of three or more numbered parts reads as decomposition.
+      const nums = lower.match(/(?:^|\n|\s)[1-9][.)]\s/g);
+      if (nums && nums.length >= 3) {
+        return { present: true, hit: `${nums.length} enumerated parts` };
+      }
+      return { present: false };
+    },
+  },
+  {
+    key: 'verification',
+    label: 'Verification',
+    weight: 0.12,
+    tip: 'Make it check its own work.',
+    missing: 'Nothing checks the answer. Ask it to verify, critique, or find its own mistakes.',
+    detect: keyword(
+      /\b(double[ -]?check|check (?:your|its|the) (?:work|answer|reasoning|facts)|verify|critique|review (?:your|its|the)\b[\s\S]{0,30}\b(?:work|answer|reasoning|draft|criteria)|self[ -]?(?:check|review|critique|grade)|fact[ -]?check|find (?:the |any )?(?:flaws?|errors?|mistakes?|holes?|weak\w*|gaps?)|what(?:'?s| is) wrong with (?:this|it|your)|where (?:could|might) (?:this|it|you|your)\b[\s\S]{0,20}\bwrong|cite (?:your )?sources?|second (?:pass|opinion|set of eyes|model|reviewer)|grade (?:your|its|the|it)\b|sanity[ -]?check|cross[ -]?check|proofread|red[ -]?team|poke holes|stress[ -]?test|catch (?:any |the )?(?:mistakes?|errors?)|rate your confidence|how confident are you|confidence (?:level|score))\b/,
+    ),
+  },
+];
+
 const TOTAL_WEIGHT = SIGNAL_DEFS.reduce((sum, d) => sum + d.weight, 0);
 
 function tierForScore(score: number): Tier {
@@ -203,13 +241,22 @@ export function scorePrompt(prompt: string, opts?: { require?: SignalKey[] }): R
   // Which signals count toward the score. If require is passed, only those, with
   // weights re-normalized across the required set so a level grades on its target.
   const requireSet = opts?.require && opts.require.length > 0 ? new Set(opts.require) : null;
-  const scored = requireSet ? SIGNAL_DEFS.filter((d) => requireSet.has(d.key)) : SIGNAL_DEFS;
+
+  // The reported signal set is the ten core signals, plus any advanced signal a
+  // drill explicitly requires. With no require, advanced signals never appear, so
+  // the default score and the rendered chips are exactly the beginner behavior.
+  const activeAdvanced = requireSet
+    ? ADVANCED_SIGNAL_DEFS.filter((d) => requireSet.has(d.key))
+    : [];
+  const defs = activeAdvanced.length ? [...SIGNAL_DEFS, ...activeAdvanced] : SIGNAL_DEFS;
+
+  const scored = requireSet ? defs.filter((d) => requireSet.has(d.key)) : SIGNAL_DEFS;
   const normBase = scored.reduce((sum, d) => sum + d.weight, 0) || TOTAL_WEIGHT;
 
   const signals: SignalResult[] = [];
   let scoreFraction = 0;
 
-  for (const def of SIGNAL_DEFS) {
+  for (const def of defs) {
     const result = blank ? { present: false } : def.detect(text, lower);
     const present = result.present;
     const counts = requireSet ? requireSet.has(def.key) : true;

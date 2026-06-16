@@ -330,5 +330,77 @@
       "confirm focus rings + no x-scroll"
     ],
     "passes": true
+  },
+  {
+    "id": 29,
+    "category": "functional",
+    "wave": 6,
+    "description": "Rubric engine adds advanced signals (decomposition, verification) used only when a drill requires them",
+    "steps": [
+      "call scorePrompt with require including an advanced signal",
+      "confirm it counts",
+      "confirm default scorePrompt still returns exactly 10 signals"
+    ],
+    "passes": true
+  },
+  {
+    "id": 30,
+    "category": "functional",
+    "wave": 6,
+    "description": "Boot Camp screen mounts at /bootcamp with at least 5 intermediate drills, each scored",
+    "steps": [
+      "visit /bootcamp",
+      "confirm >=5 drills",
+      "confirm decomposition/verification chips light on a strong answer"
+    ],
+    "passes": true
+  },
+  {
+    "id": 31,
+    "category": "functional",
+    "wave": 6,
+    "description": "Top nav exposes Boot Camp between Gym and Cookbook; route falls back cleanly",
+    "steps": [
+      "load app",
+      "confirm Boot Camp nav link",
+      "confirm it routes to the Boot Camp screen"
+    ],
+    "passes": true
+  },
+  {
+    "id": 32,
+    "category": "content",
+    "wave": 6,
+    "description": "Part Two chapters 08-11 exist (building-with-ai, agent-teams, the-cross-check, routing-loops-and-gates) with valid frontmatter and a ::practice:: drill",
+    "steps": [
+      "list content/chapters",
+      "confirm 12 files total",
+      "confirm each Part Two chapter parses and embeds a practice drill"
+    ],
+    "passes": true
+  },
+  {
+    "id": 33,
+    "category": "content",
+    "wave": 6,
+    "description": "Part Two chapters are in Michael's voice: adult, practical, NO em dashes, no markdown tables",
+    "steps": [
+      "grep chapters 08-11 for em dash",
+      "confirm none",
+      "spot-check tone"
+    ],
+    "passes": true
+  },
+  {
+    "id": 34,
+    "category": "content",
+    "wave": 6,
+    "description": "Cookbook gains a 'building' goal with the Part Two patterns, each with a copy-able prompt",
+    "steps": [
+      "run gen-cookbook",
+      "filter Cookbook by building",
+      "confirm >=6 entries with goal+prompt+source"
+    ],
+    "passes": true
   }
 ]

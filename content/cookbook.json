@@ -214,5 +214,41 @@
     "title": "Write lyrics for a short song from a feeling or story",
     "prompt": "Write lyrics for a [genre, e.g. \"folk\" or \"upbeat pop\"] song about [theme or story]. Structure it with two verses and a chorus. The mood should be [mood]. Keep the language simple and concrete, no abstract filler. Suggest a chord progression that fits the feel.",
     "source": "Gemini cookbook"
+  },
+  {
+    "goal": "building",
+    "title": "Run a specialist team inside one chat",
+    "prompt": "Work as three specialists in turn, not all at once. First, as a researcher, gather the key facts and list them with a source or example for each. Then, as a writer, turn only those facts into a draft for [audience]. Then, as an editor, tighten the draft, make sure every claim ties back to the research, and flag the two weakest spots. Here is the job:\n\n[describe what you want built]",
+    "source": "agent-teams (coordinate specialist team)"
+  },
+  {
+    "goal": "building",
+    "title": "Make the AI grade its own answer before you see it",
+    "prompt": "Answer the question below. Then, before showing me anything, review your own answer against these criteria: every fact is correct and sourced, the conclusion actually follows from the reasoning, and nothing important is missing. Fix whatever falls short, then give me only the corrected version and a one-line note on what you changed.\n\nQuestion:\n[your question]",
+    "source": "agent-teams (verify with outcome grader)"
+  },
+  {
+    "goal": "building",
+    "title": "Get a second, skeptical pass to catch what the first missed",
+    "prompt": "Here is an answer to a question. You did not write it, and your job is not to agree with it. Find its three biggest weaknesses: the places it is most likely wrong, overconfident, or missing something. For each one, say what is wrong and how you would fix it. Then give me a corrected version.\n\nQuestion:\n[the question]\n\nAnswer to review:\n[paste the first answer]",
+    "source": "agent-teams (cross-check)"
+  },
+  {
+    "goal": "building",
+    "title": "Loop until the answer clears a clear bar",
+    "prompt": "Write [the thing], then keep revising it until every one of these is true: [criterion 1], [criterion 2], [criterion 3]. After each revision, check it against the list. Show me only the version that passes all three, and confirm which criteria it now meets.\n\nDetails:\n[your context]",
+    "source": "agent-teams (iterate to a bar)"
+  },
+  {
+    "goal": "building",
+    "title": "Route effort to the parts that actually need it",
+    "prompt": "Here is a multi-part task. First, tell me which parts are routine and which need careful reasoning. Then do the routine parts quickly, and slow down on the hard parts: work through them step by step and double-check anything with numbers or logic in it. Label each section so I can see where you spent the effort.\n\nTask:\n[describe the full task]",
+    "source": "openrouter-kit (model routing)"
+  },
+  {
+    "goal": "building",
+    "title": "Add a human checkpoint before anything you cannot undo",
+    "prompt": "Help me with this end to end, but do not take any irreversible or high-stakes step on your own. Handle the routine, reversible parts yourself and keep going. When you reach anything that costs money, gets sent to someone, or is hard to take back, stop and show me exactly what you are about to do, then wait for me to approve before continuing.\n\nWhat I need:\n[describe the goal]",
+    "source": "agent-teams (human in the loop)"
   }
 ]
