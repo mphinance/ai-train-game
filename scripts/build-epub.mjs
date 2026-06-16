@@ -5,7 +5,7 @@
 //   OUTPUT: public/downloads/practical-ai.epub  (a valid epub of all chapters in order).
 //   RULES : strip web-only directives (lines equal to "::practice::"); strip frontmatter;
 //           use the chapter `title` as the section heading; include book metadata
-//           (title "Practical AI", author "Michael Hanko") and a simple cover.
+//           (title "Practical AI", author "mphinance") and a simple cover.
 //           NO em dashes introduced in any generated text.
 //
 // Implementation options (Agent to choose):
@@ -99,7 +99,7 @@ async function main() {
 
   const options = {
     title: 'Practical AI',
-    author: 'Michael Hanko',
+    author: 'mphinance',
     publisher: 'Mphinance',
     lang: 'en',
     tocTitle: 'Contents',

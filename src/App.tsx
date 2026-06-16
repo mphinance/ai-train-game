@@ -45,7 +45,7 @@ export default function App() {
               rel="noopener noreferrer"
               className="text-ink-soft underline-offset-2 hover:text-cyan hover:underline"
             >
-              Michael Hanko
+              mphinance
             </a>
           </p>
         </footer>
