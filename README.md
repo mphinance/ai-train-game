@@ -28,6 +28,10 @@ It ships as a static site with four surfaces:
   <img src="screenshots/bootcamp.png" alt="Boot Camp intermediate drills scoring decomposition and verification" width="720">
 </p>
 
+<p align="center">
+  <img src="screenshots/cookbook-building.png" alt="Cookbook filtered to the building goal with the Part Two patterns" width="720">
+</p>
+
 ## How it works
 
 100% client-side. A deterministic **rubric engine** scores your prompts offline using heuristics, not a
