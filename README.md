@@ -7,6 +7,10 @@ underwhelmed by generic tips. This is the thing in between. A short field guide 
 afternoon, paired with hands-on drills that score your prompts as you type. Concrete enough to use on
 Monday morning, light enough to actually finish.
 
+<p align="center">
+  <img src="screenshots/guide-home.png" alt="Practical AI field guide, with Part One and Part Two chapters" width="720">
+</p>
+
 It ships as a static site with four surfaces:
 
 - **Guide.** A read-it-through field guide in two parts. **Part One** takes you from stuck to fluent:
@@ -19,6 +23,10 @@ It ships as a static site with four surfaces:
   decomposition (split the work) and verification (check the work), plus capstones that combine them.
 - **Cookbook.** A browsable library of real uses by everyday goal, each with a copy-able starter
   prompt, including a `building` section for the Part Two patterns.
+
+<p align="center">
+  <img src="screenshots/bootcamp.png" alt="Boot Camp intermediate drills scoring decomposition and verification" width="720">
+</p>
 
 ## How it works
 
