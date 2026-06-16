@@ -6,360 +6,328 @@
     "description": "Project builds clean: npm run build exits 0 with no TypeScript errors",
     "steps": [
       "run npm run build",
-      "confirm exit code 0",
-      "confirm no TS errors in output"
+      "confirm exit 0",
+      "confirm no TS errors"
     ],
     "passes": true
   },
   {
     "id": 2,
     "category": "functional",
-    "wave": 0,
-    "description": "Dev server boots and renders the boot screen",
+    "wave": 1,
+    "description": "Content loader returns chapters parsed from Markdown frontmatter, sorted by order",
     "steps": [
-      "run npm run dev",
-      "open localhost",
-      "see AI TRAINER boot screen"
+      "call loadChapters()",
+      "confirm array sorted by order",
+      "confirm title/slug/summary populated"
     ],
     "passes": true
   },
   {
     "id": 3,
-    "category": "style",
-    "wave": 0,
-    "description": "Theme tokens defined in index.css @theme and used (no hardcoded hex in components)",
+    "category": "functional",
+    "wave": 1,
+    "description": "App routes resolve: /, /guide/:slug, /gym, /cookbook all mount without error",
     "steps": [
-      "open src/index.css",
-      "confirm @theme has cyan/orange/violet/lime/rose tokens",
-      "grep components for raw hex"
+      "visit each route",
+      "confirm a screen renders",
+      "confirm unknown route falls back to home"
     ],
     "passes": true
   },
   {
     "id": 4,
+    "category": "functional",
+    "wave": 1,
+    "description": "PracticeSpec + Chapter types exported from src/content/types.ts and consumed by screens",
+    "steps": [
+      "import types",
+      "confirm tsc passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": 5,
     "category": "style",
-    "wave": 0,
-    "description": "Soft paper dot texture renders behind content (Arcade Paper theme)",
+    "wave": 2,
+    "description": "Editorial reskin: theme token VALUES swapped, no arcade/Fredoka look, components unchanged",
+    "steps": [
+      "inspect index.css tokens",
+      "confirm serious palette + fonts",
+      "confirm build still passes"
+    ],
+    "passes": true
+  },
+  {
+    "id": 6,
+    "category": "functional",
+    "wave": 2,
+    "description": "App shell has a clean top nav (Guide / Gym / Cookbook) and a Substack footer; no game HUD",
     "steps": [
       "load app",
-      "observe faint fixed dot texture with radial mask"
+      "confirm nav links",
+      "confirm no XP/score HUD"
+    ],
+    "passes": true
+  },
+  {
+    "id": 7,
+    "category": "functional",
+    "wave": 2,
+    "description": "Onboarding/'jack in' overlay and HUD components are removed",
+    "steps": [
+      "grep src for Hud/Onboarding usage",
+      "confirm none referenced"
+    ],
+    "passes": true
+  },
+  {
+    "id": 8,
+    "category": "functional",
+    "wave": 3,
+    "description": "GuideHome renders a table of contents listing every chapter in order with summaries",
+    "steps": [
+      "visit /",
+      "confirm chapter list",
+      "confirm links go to /guide/:slug"
+    ],
+    "passes": true
+  },
+  {
+    "id": 9,
+    "category": "functional",
+    "wave": 3,
+    "description": "ChapterReader renders chapter body as Markdown with prev/next navigation",
+    "steps": [
+      "open a chapter",
+      "confirm rendered prose",
+      "confirm prev/next works"
     ],
     "passes": true
   },
   {
     "id": 10,
     "category": "functional",
-    "wave": 1,
-    "description": "Rubric engine detects role signal in a prompt",
+    "wave": 3,
+    "description": "Reading position is remembered via storage.ts (bookmark), not XP",
     "steps": [
-      "call rubric on 'You are a chef. Write a recipe.'",
-      "confirm role signal detected true"
+      "scroll/advance",
+      "reload",
+      "confirm last chapter surfaced"
     ],
     "passes": true
   },
   {
     "id": 11,
     "category": "functional",
-    "wave": 1,
-    "description": "Rubric engine detects all core signals across a strong prompt",
+    "wave": 3,
+    "description": "A line of only ::practice:: in a chapter renders an inline working PracticeBox",
     "steps": [
-      "build a prompt containing role, context, audience, format, constraints, example, tone",
-      "run rubric",
-      "confirm each signal flagged present",
-      "confirm score is high (>80)",
-      "confirm a weak prompt scores low (<35)",
-      "confirm score is deterministic across repeated calls",
-      "confirm per-signal feedback strings returned",
-      "confirm no network call made",
-      "confirm function is pure (no localStorage writes)",
-      "confirm empty prompt returns score 0 without throwing",
-      "confirm very long prompt handled without error"
+      "open a chapter with gym frontmatter",
+      "confirm PracticeBox appears inline",
+      "confirm it scores input"
     ],
     "passes": true
   },
   {
     "id": 12,
     "category": "functional",
-    "wave": 1,
-    "description": "Rubric returns per-signal feedback with actionable next step",
+    "wave": 3,
+    "description": "PracticeBox shows a live rubric score, per-signal feedback, and the top fix as the user types",
     "steps": [
-      "run rubric on weak prompt",
-      "confirm feedback names the single highest-impact missing signal"
+      "type a weak prompt",
+      "confirm low score + topFix",
+      "improve prompt",
+      "confirm score rises"
     ],
     "passes": true
   },
   {
     "id": 13,
     "category": "functional",
-    "wave": 1,
-    "description": "Taste Engine records an interest event and updates weighted profile",
+    "wave": 3,
+    "description": "PracticeBox honors a spec's require[] so a drill grades only on its target signals",
     "steps": [
-      "call taste.record with topic cooking",
-      "call taste.record with topic cooking again",
-      "confirm cooking weight increased",
-      "confirm topInterests returns cooking first",
-      "confirm profile persists to localStorage",
-      "confirm reload restores profile",
-      "confirm unknown tag is rejected or namespaced safely",
-      "confirm topInterests(n) respects n",
-      "confirm a fresh profile returns sensible defaults",
-      "confirm no questions/prompts surfaced to user by the engine"
+      "load a drill with require",
+      "confirm only those signals count"
     ],
     "passes": true
   },
   {
     "id": 14,
     "category": "functional",
-    "wave": 1,
-    "description": "Progress engine awards XP, levels up, and tracks streak",
+    "wave": 3,
+    "description": "Standalone /gym lists at least 6 practice drills, each independently scored",
     "steps": [
-      "add XP below threshold, confirm level unchanged",
-      "add XP past threshold, confirm level increments",
-      "confirm streak increments on consecutive plays",
-      "confirm badges can be unlocked and de-duplicated",
-      "confirm state persists to localStorage",
-      "confirm reload restores XP/level/streak/badges",
-      "confirm HUD-facing selector returns a stable shape",
-      "confirm resetting progress clears storage"
+      "visit /gym",
+      "confirm >=6 drills",
+      "complete one"
     ],
     "passes": true
   },
   {
     "id": 15,
     "category": "functional",
-    "wave": 1,
-    "description": "Level/content data schema is typed and shared",
+    "wave": 3,
+    "description": "Cookbook Browser lists AI-use entries grouped/filterable by real-life goal",
     "steps": [
-      "open src/engine/types.ts",
-      "confirm Level, Signal, IdeaCard, DeckCard types exported",
-      "confirm screens can import them"
+      "visit /cookbook",
+      "filter by a goal",
+      "confirm entries change"
+    ],
+    "passes": true
+  },
+  {
+    "id": 16,
+    "category": "functional",
+    "wave": 3,
+    "description": "Each Cookbook entry has a copy-able starter prompt with a working copy button",
+    "steps": [
+      "click copy on an entry",
+      "confirm clipboard write",
+      "confirm visual confirmation"
+    ],
+    "passes": true
+  },
+  {
+    "id": 17,
+    "category": "functional",
+    "wave": 3,
+    "description": "content/cookbook.json is generated from ../ai-cookbook by scripts/gen-cookbook.mjs",
+    "steps": [
+      "run gen-cookbook",
+      "confirm JSON written",
+      "confirm entries have goal+prompt+source"
+    ],
+    "passes": true
+  },
+  {
+    "id": 18,
+    "category": "content",
+    "wave": 3,
+    "description": "All 8 chapters exist as Markdown in content/chapters with valid frontmatter",
+    "steps": [
+      "list content/chapters",
+      "confirm 8 files",
+      "confirm each parses"
+    ],
+    "passes": true
+  },
+  {
+    "id": 19,
+    "category": "content",
+    "wave": 3,
+    "description": "Chapters are in Michael's voice: adult, practical, NO em dashes, no markdown tables",
+    "steps": [
+      "grep chapters for em dash",
+      "confirm none",
+      "spot-check tone"
     ],
     "passes": true
   },
   {
     "id": 20,
-    "category": "functional",
-    "wave": 2,
-    "description": "App shell mounts router with Hub as the landing route",
+    "category": "content",
+    "wave": 3,
+    "description": "At least 4 chapters embed a ::practice:: drill with a matching gym frontmatter block",
     "steps": [
-      "load app",
-      "confirm Hub renders",
-      "confirm routes exist for each mode"
+      "grep ::practice::",
+      "confirm >=4",
+      "confirm each has gym spec"
     ],
     "passes": true
   },
   {
     "id": 21,
     "category": "functional",
-    "wave": 2,
-    "description": "HUD shows live XP, level, and streak and updates after an action",
+    "wave": 4,
+    "description": "scripts/build-epub.mjs produces public/downloads/practical-ai.epub from the chapters",
     "steps": [
-      "observe HUD on load",
-      "complete a scoring action",
-      "confirm XP number rises in the HUD without reload"
+      "run npm run epub",
+      "confirm epub file created",
+      "confirm all chapters present in order"
     ],
     "passes": true
   },
   {
     "id": 22,
     "category": "functional",
-    "wave": 2,
-    "description": "Hub is a Tron map with selectable mode nodes",
+    "wave": 4,
+    "description": "epub strips web-only ::practice:: directives and contains clean prose",
     "steps": [
-      "load Hub",
-      "confirm each mode appears as a node",
-      "click a node, confirm navigation to that mode"
+      "unzip epub",
+      "grep for ::practice::",
+      "confirm none"
     ],
     "passes": true
   },
   {
     "id": 23,
     "category": "functional",
-    "wave": 2,
-    "description": "Glow-Up mode is fully playable end to end",
+    "wave": 4,
+    "description": "GuideHome shows a 'Download the ebook' CTA linking to the epub",
     "steps": [
-      "open Glow-Up",
-      "see lazy starter prompt and weak output",
-      "add a Role ingredient",
-      "confirm prompt text and score update",
-      "add Context, Constraints, Format ingredients",
-      "confirm simulated output visibly improves",
-      "confirm score crosses the win threshold",
-      "confirm a win state / XP award fires",
-      "confirm you can remove an ingredient and score drops",
-      "confirm reduced-motion users still get a usable experience",
-      "confirm keyboard can add/remove ingredients"
+      "visit /",
+      "confirm CTA",
+      "confirm link resolves to the epub path"
     ],
     "passes": true
   },
   {
     "id": 24,
     "category": "style",
-    "wave": 2,
-    "description": "HUD and Hub use neon-box/panel utilities and glow, no raw hex",
+    "wave": 4,
+    "description": "OG/social cards and <title> updated to Practical AI (no leftover AI Trainer/game copy)",
     "steps": [
-      "inspect HUD and Hub markup",
-      "confirm .panel/.neon-box/.text-glow used",
-      "grep for hardcoded hex"
+      "view index.html head",
+      "confirm title + og:* updated"
     ],
     "passes": true
   },
   {
-    "id": 30,
-    "category": "functional",
-    "wave": 3,
-    "description": "Mind Reader mode is playable end to end",
-    "steps": [
-      "open Mind Reader",
-      "see a secret goal",
-      "write a vague prompt and submit",
-      "confirm the literal AI reply exposes the gap to the goal",
-      "confirm a hint/diff highlights what was unspecified",
-      "revise the prompt to add the missing specifics",
-      "submit again",
-      "confirm the reply now satisfies the goal",
-      "confirm a win/XP award fires",
-      "confirm at least 3 distinct goals exist",
-      "confirm it never calls the network"
-    ],
-    "passes": true
-  },
-  {
-    "id": 31,
-    "category": "functional",
-    "wave": 3,
-    "description": "Did-You-Know Deck flips cards and runs micro-challenges",
-    "steps": [
-      "open Deck mode",
-      "see a stack/grid of cards",
-      "flip a card to reveal the unexpected use",
-      "start its 30s micro-challenge",
-      "submit an attempt and get rubric feedback",
-      "confirm engaging a card records a Taste event",
-      "confirm progress through the deck is tracked",
-      "confirm at least 8 cards exist across varied topics",
-      "confirm cards are keyboard-flippable",
-      "confirm a completed card is visibly marked"
-    ],
-    "passes": true
-  },
-  {
-    "id": 32,
-    "category": "functional",
-    "wave": 3,
-    "description": "Badges/progression screen reflects real progress state",
-    "steps": [
-      "earn XP and a badge in another mode",
-      "open Badges screen",
-      "confirm earned badges show unlocked and locked ones show how to earn them",
-      "confirm XP/level/streak shown match the engine",
-      "confirm Idea Forge entry or teaser is reachable"
-    ],
-    "passes": true
-  },
-  {
-    "id": 33,
-    "category": "functional",
-    "wave": 3,
-    "description": "Idea Forge generates personalized ideas from the Taste profile",
-    "steps": [
-      "play cards/prompts skewed toward cooking and writing",
-      "open Idea Forge",
-      "confirm generated ideas reference the inferred interests",
-      "play skewed toward coding instead",
-      "confirm Idea Forge output changes accordingly",
-      "confirm ideas come from the offline idea bank",
-      "confirm no quiz questions were asked",
-      "confirm a fresh user with no signal still gets reasonable starter ideas",
-      "confirm each idea is actionable (a thing to try with AI)",
-      "confirm it never calls the network"
-    ],
-    "passes": true
-  },
-  {
-    "id": 40,
+    "id": 25,
     "category": "functional",
     "wave": 4,
-    "description": "Content pack: at least 15 levels/items across the modes",
+    "description": "All KILL-list game files removed; no dead imports remain",
     "steps": [
-      "count Glow-Up levels",
-      "count Mind Reader goals",
-      "count Deck cards",
-      "confirm total >= 15 and spread across modes"
+      "confirm deleted files gone",
+      "run build",
+      "confirm no missing-import errors"
     ],
     "passes": true
   },
   {
-    "id": 41,
-    "category": "style",
-    "wave": 4,
-    "description": "Win/feedback juice: animated score, glow burst, and copy feel game-y",
-    "steps": [
-      "trigger a win",
-      "observe animated XP and a glow/particle burst",
-      "confirm copy is short and playful"
-    ],
-    "passes": true
-  },
-  {
-    "id": 42,
-    "category": "style",
-    "wave": 4,
-    "description": "Transitions between screens use Tron light-trail / snap motion",
-    "steps": [
-      "navigate Hub to a mode",
-      "observe a trail/snap transition",
-      "confirm it is disabled under reduced-motion"
-    ],
-    "passes": true
-  },
-  {
-    "id": 50,
-    "category": "style",
-    "wave": 5,
-    "description": "Zero em dashes anywhere in shipped copy",
-    "steps": [
-      "grep all src for the em dash character",
-      "confirm zero matches in user-facing strings"
-    ],
-    "passes": true
-  },
-  {
-    "id": 51,
+    "id": 26,
     "category": "functional",
     "wave": 5,
-    "description": "Fully keyboard navigable with visible focus and basic a11y",
+    "description": "Existing rubric/engine unit tests still pass (npm test)",
     "steps": [
-      "tab through Hub and each mode",
-      "confirm focus is visible",
-      "confirm interactive elements are reachable and labeled",
-      "confirm reduced-motion honored"
+      "run npm test",
+      "confirm rubric.test + others green"
     ],
     "passes": true
   },
   {
-    "id": 52,
+    "id": 27,
     "category": "functional",
     "wave": 5,
-    "description": "State persists across reload and survives offline",
+    "description": "Zero runtime network calls; app works offline after first load",
     "steps": [
-      "earn XP, set taste profile",
-      "hard reload",
-      "confirm progress and profile intact",
-      "go offline",
-      "confirm app still loads and plays"
+      "grep src for fetch/axios/XMLHttpRequest",
+      "confirm none at runtime",
+      "load offline"
     ],
     "passes": true
   },
   {
-    "id": 53,
-    "category": "functional",
+    "id": 28,
+    "category": "style",
     "wave": 5,
-    "description": "Responsive: usable on a phone-width viewport",
+    "description": "Responsive to 375px with no horizontal scroll; keyboard navigable; reduced motion honored",
     "steps": [
-      "resize to 390px wide",
-      "confirm Hub and modes are usable with no horizontal scroll",
-      "confirm tap targets are adequate"
+      "resize to 375px",
+      "tab through",
+      "confirm focus rings + no x-scroll"
     ],
     "passes": true
   }

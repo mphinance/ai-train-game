@@ -1,40 +1,40 @@
 @import 'tailwindcss';
 
-/* Fonts are loaded via <link> in index.html (Fredoka / Nunito / JetBrains Mono). */
+/* Fonts are loaded via <link> in index.html (Newsreader / Inter / JetBrains Mono). */
 
 /* ============================================================
-   AI TRAINER, ARCADE PAPER THEME (light)
+   PRACTICAL AI, EDITORIAL THEME (light)
    The single source of truth for color, shadow, and motion.
    Components theme off these tokens. Do not hardcode hex.
-   Bright paper surfaces, jewel-tone accents that read on white,
-   soft rounded elevation, friendly rounded display font.
+   Clean paper surfaces, deep indigo primary, restrained
+   palette, serious serif display, clean sans body.
    ============================================================ */
 @theme {
-  /* Core surfaces (light). Token names kept from the old theme so every
+  /* Core surfaces (light). Token names kept so every
      component keeps working. "void" is the page, "abyss" is a white card. */
-  --color-void: #eef2f8;        /* page background, soft cool paper */
+  --color-void: #f5f4f1;        /* page background, warm off-white paper */
   --color-abyss: #ffffff;       /* card / panel background, white */
-  --color-grid: #d9e1ef;        /* faint dot texture */
-  --color-edge: #d6deea;        /* borders, inactive */
+  --color-grid: #e2dfd8;        /* faint dot texture */
+  --color-edge: #d8d4cb;        /* borders, inactive */
 
-  /* Accents, jewel tones picked for contrast on white (readable as text too) */
-  --color-cyan: #0e7490;        /* primary / "the program" */
-  --color-cyan-dim: #5aa6ba;
-  --color-orange: #e2590a;      /* opponent / danger / accent */
-  --color-orange-dim: #f0a878;
-  --color-violet: #7c3aed;      /* rare / special / idea forge */
-  --color-lime: #1a9e4b;        /* success / correct */
-  --color-rose: #dd2358;        /* error / wrong */
+  /* Accents, restrained editorial palette */
+  --color-cyan: #2d4fa1;        /* primary, deep indigo-blue */
+  --color-cyan-dim: #7b92c8;    /* primary, dimmed */
+  --color-orange: #b84c1a;      /* secondary, warm terracotta */
+  --color-orange-dim: #d9937a;  /* secondary, dimmed */
+  --color-violet: #5b3fa6;      /* tertiary, muted violet */
+  --color-lime: #1e7e46;        /* success, deep green */
+  --color-rose: #b02040;        /* error, deep crimson */
 
   /* Text (dark ink on light) */
-  --color-ink: #16233a;         /* primary text, deep navy ink */
-  --color-ink-soft: #51607a;    /* secondary text */
-  --color-ink-faint: #94a1b5;   /* tertiary / disabled */
+  --color-ink: #1a1917;         /* primary text, near-black warm ink */
+  --color-ink-soft: #4d4a44;    /* secondary text */
+  --color-ink-faint: #9a9590;   /* tertiary / disabled */
 
-  /* Type, friendly rounded arcade */
-  --font-display: 'Fredoka', 'Baloo 2', system-ui, sans-serif;
+  /* Type, serious editorial serif display + clean sans body */
+  --font-display: 'Newsreader', 'Georgia', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-  --font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
 
   /* Motion */
   --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -56,7 +56,7 @@
     overflow-x: hidden;
   }
 
-  /* Soft paper dot texture, a hint of warmth behind everything. Very faint. */
+  /* Soft paper dot texture, barely visible. Editorial restraint. */
   body::before {
     content: '';
     position: fixed;
@@ -64,10 +64,10 @@
     z-index: 0;
     pointer-events: none;
     background-image: radial-gradient(var(--color-grid) 1.4px, transparent 1.4px);
-    background-size: 24px 24px;
+    background-size: 28px 28px;
     background-position: center;
     mask-image: radial-gradient(ellipse 100% 80% at 50% 35%, #000 40%, transparent 90%);
-    opacity: 0.6;
+    opacity: 0.25;
   }
 
   #root { position: relative; z-index: 2; }
@@ -76,9 +76,9 @@
 }
 
 /* ============================================================
-   Reusable surface utilities. On the light theme these are soft
-   rounded arcade cards rather than glowing neon boxes. The class
-   names are kept so components do not need to change.
+   Reusable surface utilities. On the editorial theme these are
+   clean, quietly bordered cards. Class names are kept so
+   components do not need to change.
    ============================================================ */
 @layer utilities {
   /* "Glow" classes are now no-ops on light, legibility comes from weight
@@ -86,12 +86,13 @@
   .text-glow      { text-shadow: none; }
   .text-glow-soft { text-shadow: none; }
 
-  /* A soft, colored, slightly chunky arcade card. currentColor is the accent. */
+  /* A quiet, bordered editorial card. currentColor is the accent.
+     Kept as .neon-box so existing markup compiles unchanged. */
   .neon-box {
-    border: 1.5px solid color-mix(in srgb, currentColor 45%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
     box-shadow:
-      0 1px 0 color-mix(in srgb, currentColor 14%, transparent),
-      0 12px 26px -16px color-mix(in srgb, currentColor 55%, transparent);
+      0 1px 0 color-mix(in srgb, currentColor 8%, transparent),
+      0 8px 20px -14px color-mix(in srgb, currentColor 20%, transparent);
   }
 
   .panel {
@@ -145,7 +146,7 @@
   0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; }
   20%, 22%, 82% { opacity: 0.82; }
 }
-/* Soft arcade pulse, a gentle scale + opacity instead of a neon halo. */
+/* Soft pulse, a gentle scale + opacity for interactive emphasis. */
 @keyframes pulse-soft {
   0%, 100% { transform: scale(1); opacity: 1; }
   50%      { transform: scale(1.04); opacity: 0.92; }

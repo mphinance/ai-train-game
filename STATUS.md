@@ -1,93 +1,70 @@
-# AI Trainer, build status
+# Practical AI, build status
 
-**Done. Shipped. 26 of 26 features passing.** A bright, arcade-styled browser game that teaches
-people to talk to AI by playing instead of reading the manual. Fully offline, static-deployable,
-zero API keys, works on a plane.
+**Done. 28 of 28 features passing.** Practical AI is a serious, hands-on, interactive guide that
+teaches a smart adult to actually use AI well. It fills the gap between "bad at AI and won't read
+docs" and formal Skilljar/Anthropic certification. Built by pivoting the old arcade game in place, so
+the live URL and Pages deploy are unchanged.
+
+This was built on a feature branch (`feat/practical-ai-pivot`). Nothing is deployed until that branch
+merges to `main`, which protects the currently-live site.
 
 ## What got built
 
-Four modes, all playable end to end:
-
-- **Glow-Up** (6 levels). Hand the player a lazy prompt and its sad output, let them drag in
-  ingredients (role, context, constraints, format, audience, tone), and the AI answer rebuilds
-  live as the score climbs. Cross the win line, bank XP. Topics span cooking, writing, study,
-  fitness, travel, money.
-- **Mind Reader** (5 goals). A secret goal, one prompt, and an AI that answers only what you
-  literally asked for. The gap between what you meant and what you said gets shown back to you in
-  red. This is the "lol how to say what you want" lesson, and it lands.
-- **Did-You-Know Deck** (12 cards). Flip cards of AI uses people never think of (rubber-duck
-  debugging, explain like I am 8, fridge-to-recipes, rehearse a hard talk, decode a contract),
-  each with a 30-second micro-challenge that gets scored.
-- **Idea Forge** (26-card idea bank). The payoff. It quietly watches what you play and hands you
-  AI-use ideas tuned to you, with copy-pasteable starter prompts. No quiz, ever.
-
-## The clever bits
-
-- **Offline rubric engine.** A pure, deterministic scorer detects ten prompt-quality signals
-  (role, context, audience, format, constraints, examples, tone, specificity, stepwise, length).
-  Instant feedback, no network, which is what makes the whole thing a free static site.
-- **Taste Engine.** Silent preference learning. Every card you flip and topic you pick nudges a
-  weighted interest profile in localStorage. Play cooking levels, the Idea Forge starts talking
-  about cooking. Verified live end to end during the build.
-- **Progression.** XP, levels, a day streak, and eight badges, all persisted and live-updating in
-  the HUD through a tiny pub/sub.
-
-## Stack and shape
-
-Vite 8, React 19, TypeScript strict, Tailwind v4 (CSS-first theme, no config file),
-react-router v7 on a HashRouter so refreshes never 404 on Pages. State is localStorage only.
-The Arcade Paper look (bright paper, jewel-tone accents, soft rounded shadows, friendly rounded
-display font) lives entirely in theme tokens, so there is not a hardcoded hex anywhere in the
-components. It started as a dark Tron theme and got re-skinned to light by swapping tokens alone,
-which is exactly why that token discipline paid off.
+- **Field Guide.** Eight chapters authored as portable Markdown in `content/chapters/`, rendered as a
+  clean reader with a table of contents, prev/next navigation, and a remembered reading position.
+  Chapters: why most people are bad at AI, how to talk to AI, say what you mean, output you can trust,
+  what AI is good at, the moves pros use, putting it to work, and where to go next.
+- **Prompt Gym.** The old game's one real asset, the offline deterministic rubric engine, kept intact
+  and given a serious live-feedback UI. Practice boxes appear inline inside chapters at a `::practice::`
+  marker and standalone at `/gym` with seven drills, each grading on its own target signals as you type.
+- **Cookbook Browser.** A searchable, goal-filtered browser of 36 real AI uses across ten goals
+  (writing, cooking, business, parenting, learning, money, coding, travel, fitness, creative), each with
+  a copy-able starter prompt. Generated from the gathered `../ai-cookbook` library.
+- **Ebook.** The same chapters compile to a real downloadable epub at
+  `public/downloads/practical-ai.epub` (the `::practice::` drills are stripped for print), offered from
+  the guide home. One source, two outputs.
+- **Editorial reskin.** The arcade theme was swapped token-for-token to a serious editorial look: deep
+  indigo on warm paper, Newsreader serif headings, Inter body. No XP, no badges, no mascot.
+- **Cleanup.** Every game artifact removed: XP/badges/progress/taste engine, six game screens, the HUD,
+  the onboarding overlay, the arcade UI components, and the old data files.
 
 ## Verified
 
-- `npm run build` clean, no TypeScript errors. `npm run test` 42 of 42 green.
-- All four modes smoke-tested through the real UI, including a full Glow-Up win and the
-  Mind Reader gap reveal.
-- Taste to Idea Forge personalization confirmed live (cooking signal carried through).
-- Persistence survives a hard reload. Zero runtime network calls (grep-confirmed), so it runs
-  offline after first load.
-- Responsive down to 375px with no horizontal scroll (fixed a route-trail overflow that bit
-  mobile). Keyboard navigable, visible focus rings, reduced motion honored.
-- Zero em dashes anywhere, per house style.
+- `npm run build` is clean (no TS errors). `npm test` is green (rubric engine, 18 tests).
+- A real headless-chromium smoke passed 10 of 10 checks: TOC renders, the ebook link is present, the
+  practice box live-scores as you type, the reading bookmark persists, the gym shows seven drills, the
+  cookbook lists entries, the copy button confirms, and there is no horizontal scroll at 375px.
+- Zero em dashes across source and chapters. Zero runtime network calls (offline after first load).
 
-## How it was built
+## Stack and shape
 
-Orchestrated in waves with verification and a commit between each one:
+Vite 8, React 19, TypeScript, Tailwind v4 (token theme), react-router with HashRouter. 100%
+client-side, no backend, no API keys. Deploys static to GitHub Pages. Chapters are plain Markdown loaded
+via `import.meta.glob`; the rubric engine and the epub build are pure and deterministic.
 
-| Wave | What | How |
+## Waves
+
+| Wave | What | Who |
 |---|---|---|
-| 0 | Scaffold, theme, SPEC, feature list | orchestrator |
-| 1 | Engine (rubric, taste, progress, types, hooks, tests) | 1 serial agent |
-| 2 | Shell, router, HUD, Hub, Glow-Up vertical, stubs | 1 serial agent |
-| 3 | Mind Reader, Deck, Badges, Idea Forge | 3 parallel agents |
-| 4 | Route transitions, more Glow-Up content | 1 serial agent |
-| 5 | Mobile fix, em-dash scrub, a11y, deploy, this doc | orchestrator |
+| 0 | Spec, build plan, reset feature list | orchestrator |
+| 1 | Foundation: content loader, route table, stubs, script contracts | orchestrator (Opus) |
+| 2 | Editorial reskin + shell | 1 agent (Sonnet) |
+| 3 | Guide reader, Prompt Gym, Cookbook Browser, all 8 chapters | 4 agents (3 Sonnet, 1 Opus) |
+| 4 | Epub pipeline + dead-game cleanup | 1 agent + orchestrator |
+| 5 | Browser smoke, final verify, this doc | orchestrator |
+
+## Known follow-ups (not blocking)
+
+- `public/og.png` is still the old arcade social card. The OG/Twitter text is updated to Practical AI,
+  but the image should be regenerated to match.
+- Optional: add a CI step to run `npm run epub` before build so the ebook always reflects the latest
+  chapters (right now the epub is committed and regenerated on demand via `npm run epub`).
 
 ## Run it
 
 ```bash
 npm install
-npm run dev      # play locally
-npm run build    # static build into dist/
-npm run test     # 42 engine tests
+npm run dev        # play locally
+npm run epub       # regenerate public/downloads/practical-ai.epub from the chapters
+npm run build      # static build into dist/ (Pages-deployable)
 ```
-
-A GitHub Pages workflow (`.github/workflows/deploy.yml`) publishes `dist/` on every push to
-`main`. Push it up, enable Pages (source: GitHub Actions), and it is live.
-
-## Known small stuff (not blocking)
-
-- The rubric is heuristic on purpose. It is a teaching signal, not a grader, so a few phrasings
-  (e.g. an implied audience) can score lower than a human would. Easy to tune later if you want.
-- "Live Mode" (real Claude grading via a pasted key) was scoped out of v1 on purpose. The engine
-  is structured so it can slot in behind the same `scorePrompt` seam later.
-
-## Next, if you want to take it further
-
-- A short onboarding "jack in" animation on first load.
-- Sound (the synthwave-adjacent kind), gated behind a toggle.
-- Share-a-score card export for the Substack crowd.
-- Wire the optional Live Mode for people who want a real model grading their prompts.
